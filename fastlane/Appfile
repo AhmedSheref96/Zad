@@ -1,0 +1,11 @@
+require 'dotenv'
+
+for_lane "development" do
+    package_name("")
+    json_key_file("")
+    end
+
+for_lane "production" do
+    package_name("")
+    json_key_file("")
+    end

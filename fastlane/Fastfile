@@ -1,0 +1,54 @@
+default_platform(:android)
+
+require 'dotenv'
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Build new development apk"
+  lane :development do
+    gradle(task: "clean assembleRelease")
+  end
+
+  lane :increment_version do
+    latest_release = firebase_app_distribution_get_latest_release(
+      app: "1:425009558036:android:14e7743013a9b136acad01",
+      service_credentials_file: "./fastlane/google-service-secrets.json"
+    )
+
+    puts "Latest release response: #{latest_release.inspect}"
+
+    # Fallback if the API response is incorrect
+    if latest_release.nil? || latest_release[:buildVersion].to_i == 0
+      UI.error("Failed to fetch the latest release version code. Defaulting to 63.")
+      latest_version_code = 63 # Replace this with the actual last known version code
+    else
+      latest_version_code = latest_release[:buildVersion].to_i
+    end
+
+    new_version_code = latest_version_code + 1
+    gradle_file = "../app/build.gradle"
+
+    gradle_content = File.read(gradle_file)
+    gradle_content.gsub!(/versionCode (\d+)/, "versionCode #{new_version_code}")
+    File.write(gradle_file, gradle_content)
+  end
+
+  desc "distribute to app distribution"
+  lane :distribute do
+        increment_version
+        # Build the Android app using the gradle task
+        gradle(
+          task: "assembleRelease" # Specify the Gradle task here
+        )
+        release = firebase_app_distribution(
+          app: "1:425009558036:android:14e7743013a9b136acad01",
+          service_credentials_file: "./fastlane/google-service-secrets.json",
+          debug: false
+        )
+      end
+
+end
