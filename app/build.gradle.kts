@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.el3sas.zad"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.el3sas.zad"

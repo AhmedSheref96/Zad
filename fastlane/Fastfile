@@ -10,13 +10,14 @@ platform :android do
 
   desc "Build new development apk"
   lane :development do
-    gradle(task: "clean assembleRelease")
+#     gradle(task: "clean assembleRelease")
+    UI.message("App ID: #{ENV['APP_ID']}")
   end
 
   lane :increment_version do
     latest_release = firebase_app_distribution_get_latest_release(
-      app: "1:425009558036:android:14e7743013a9b136acad01",
-      service_credentials_file: "./fastlane/google-service-secrets.json"
+      app: ENV['APP_ID'],
+      service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON']
     )
 
     puts "Latest release response: #{latest_release.inspect}"
@@ -45,8 +46,8 @@ platform :android do
           task: "assembleRelease" # Specify the Gradle task here
         )
         release = firebase_app_distribution(
-          app: "1:425009558036:android:14e7743013a9b136acad01",
-          service_credentials_file: "./fastlane/google-service-secrets.json",
+          app: ENV['APP_ID'],
+          service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
           debug: false
         )
       end
