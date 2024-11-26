@@ -13,16 +13,13 @@ before_script:
   - npm install -g npm@latest
   - apt-get install -y ruby-full
   - gem install bundler
-  - gem install fastlane
   - chmod +x ./gradlew
 
 setup:
   stage: setup
   script:
-    - ruby -v
-    - bundler -v
-    - fastlane -v
-    - bundle install
+    - bundle install --jobs=4 --retry=3
+    - gem install fastlane
 
 build:
   stage: build
