@@ -15,6 +15,11 @@ before_script:
   - gem install bundler
   - gem install fastlane
   - bundle install
+  - mkdir -p "$ANDROID_HOME"
+  - curl -sL https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -o commandlinetools.zip
+  - unzip commandlinetools.zip -d "$ANDROID_HOME"
+  - yes | "$ANDROID_HOME/tools/bin/sdkmanager" --sdk_root="$ANDROID_HOME" "platform-tools" "build-tools;30.0.3" "android-29"  # Install necessary SDK packages
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties  # Dynamically create local.properties
   - chmod +x ./gradlew
 
 setup:
