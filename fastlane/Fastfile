@@ -8,6 +8,12 @@ platform :android do
     gradle(task: "test")
   end
 
+
+  desc "Accept Android SDK Licenses"
+  lane :accept_sdk_licenses do
+    sh "yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses"
+  end
+
   desc "Build new development apk"
   lane :development do
 #     gradle(task: "clean assembleRelease")
@@ -15,6 +21,7 @@ platform :android do
   end
 
   lane :increment_version do
+    accept_sdk_licenses
     latest_release = firebase_app_distribution_get_latest_release(
       app: ENV['APP_ID'],
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON']
@@ -40,16 +47,17 @@ platform :android do
 
   desc "distribute to app distribution"
   lane :distribute do
-        increment_version
-        # Build the Android app using the gradle task
-        gradle(
-          task: "assembleRelease" # Specify the Gradle task here
-        )
-        release = firebase_app_distribution(
-          app: ENV['APP_ID'],
-          service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
-          debug: false
-        )
-      end
+    accept_sdk_licenses
+    increment_version
+    # Build the Android app using the gradle task
+    gradle(
+      task: "assembleRelease" # Specify the Gradle task here
+    )
+    release = firebase_app_distribution(
+      app: ENV['APP_ID'],
+      service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
+      debug: false
+    )
+  end
 
 end
