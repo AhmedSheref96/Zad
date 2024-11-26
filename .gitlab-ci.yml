@@ -28,6 +28,8 @@ before_script:
   - unzip android-cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
   - rm android-cmdline-tools.zip
   - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_SDK_CMDLINE_TOOLS}
+  # قبول التراخيص لجميع الحزم
+  - yes | ${ANDROID_SDK_CMDLINE_TOOLS}/bin/sdkmanager --licenses
 
 setup:
   stage: setup
