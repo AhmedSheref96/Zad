@@ -5,9 +5,8 @@ stages:
 variables:
   RUBY_VERSION: "3.2.2"
   JAVA_VERSION: "17"
-  ANDROID_HOME: "/path/to/android/sdk"  # Set this to the path where the SDK is located on your CI runner
-  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"  # Optional, caches Gradle dependencies
-
+  ANDROID_HOME: "/usr/local/android-sdk"
+  ANDROID_SDK_CMDLINE_TOOLS: "/usr/local/android-sdk/cmdline-tools"
 
 before_script:
   - apt-get update && apt-get install -y curl
@@ -18,13 +17,13 @@ before_script:
   - gem install bundler
   - gem install fastlane
   - bundle install
-  - echo "sdk.dir=$ANDROID_HOME" > local.properties  # Create local.properties dynamically
-  - mkdir -p "$ANDROID_HOME"
-  - curl -sL https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -o commandlinetools.zip
-  - unzip commandlinetools.zip -d "$ANDROID_HOME"
-  - yes | "$ANDROID_HOME/tools/bin/sdkmanager" --sdk_root="$ANDROID_HOME" "platform-tools" "build-tools;30.0.3" "android-29"  # Install necessary SDK packages
-  - echo "sdk.dir=$ANDROID_HOME" > local.properties  # Dynamically create local.properties
   - chmod +x ./gradlew
+  - apt-get install -y openjdk-17-jdk
+  - java -version
+  - mkdir -p ${ANDROID_HOME}/cmdline-tools
+  - curl -s https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -o android-cmdline-tools.zip
+  - unzip android-cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
+  - yes | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools" "build-tools;30.0.3" "platforms;android-30"
 
 setup:
   stage: setup
@@ -33,11 +32,10 @@ setup:
     - bundler -v
     - fastlane -v
     - bundle install
+    - echo "Android SDK installed at ${ANDROID_HOME}"
 
 build:
   stage: build
   script:
-    - apt-get install -y openjdk-17-jdk
-    - java -version
-    - fastlane -v
+    - echo "Starting the Android build"
     - bundle exec fastlane distribute
