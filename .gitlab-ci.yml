@@ -10,15 +10,16 @@ before_script:
   - apt-get update && apt-get install -y curl
   - curl -sL https://deb.nodesource.com/setup_18.x | bash -
   - apt-get install -y nodejs
-  - npm install -g npm@latest # تحديث `npm`
-  - chmod +x ./gradlew # إذا كنت تستخدم Gradle
+  - npm install -g npm@latest
+  - apt-get install -y ruby-full
+  - gem install bundler
+  - chmod +x ./gradlew
 
 setup:
   stage: setup
   script:
-    - apt-get update && apt-get install -y ruby-full
-    - gem install bundler
     - bundle install
+    - gem install fastlane
 
 build:
   stage: build
