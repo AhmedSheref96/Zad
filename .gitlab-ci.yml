@@ -27,8 +27,12 @@ before_script:
   - curl -sL ${ANDROID_SDK_URL} -o android-cmdline-tools.zip
   - unzip android-cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
   - rm android-cmdline-tools.zip
-  # تأكد من أن الأدوات تم استخراجها في المسار الصحيح
   - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_SDK_CMDLINE_TOOLS}
+
+  # حذف مجلد platform-tools القديم إذا كان موجودًا
+  - rm -rf ${ANDROID_HOME}/platform-tools
+
+  # تثبيت الأدوات مرة أخرى
   - yes | ${ANDROID_SDK_CMDLINE_TOOLS}/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools" "build-tools;30.0.3" "platforms;android-30"
   - yes | ${ANDROID_SDK_CMDLINE_TOOLS}/bin/sdkmanager --licenses
 
