@@ -7,9 +7,10 @@ variables:
   JAVA_VERSION: "17"
   ANDROID_HOME: "/usr/local/android-sdk"
   ANDROID_SDK_CMDLINE_TOOLS: "/usr/local/android-sdk/cmdline-tools"
+  ANDROID_SDK_URL: "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
 
 before_script:
-  - apt-get update && apt-get install -y curl
+  - apt-get update && apt-get install -y curl unzip
   - curl -sL https://deb.nodesource.com/setup_18.x | bash -
   - apt-get install -y nodejs
   - npm install -g npm@latest
@@ -20,10 +21,14 @@ before_script:
   - chmod +x ./gradlew
   - apt-get install -y openjdk-17-jdk
   - java -version
+
+  # Setup Android SDK
   - mkdir -p ${ANDROID_HOME}/cmdline-tools
-  - curl -s https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip -o android-cmdline-tools.zip
+  - curl -sL ${ANDROID_SDK_URL} -o android-cmdline-tools.zip
   - unzip android-cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
+  - rm android-cmdline-tools.zip
   - yes | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_HOME} "platform-tools" "build-tools;30.0.3" "platforms;android-30"
+  - yes | ${ANDROID_HOME}/cmdline-tools/bin/sdkmanager --licenses
 
 setup:
   stage: setup
