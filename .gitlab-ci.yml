@@ -5,6 +5,9 @@ stages:
 variables:
   RUBY_VERSION: "3.2.2"
   JAVA_VERSION: "17"
+  ANDROID_HOME: "/opt/android-sdk-linux"  # Set to the desired SDK path (adjust based on your runner)
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"  # Optional, caches Gradle dependencies
+
 
 before_script:
   - apt-get update && apt-get install -y curl
