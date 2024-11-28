@@ -37,4 +37,5 @@ deploy to production:
     - bundle exec fastlane update_version_for_new_feature
     - bundle exec fastlane distribute
 
-  only: null
+  only:
+    - ff
