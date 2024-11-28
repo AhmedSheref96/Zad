@@ -2,42 +2,34 @@ stages:
   - setup
   - build
 
-variables:
-  RUBY_VERSION: "3.2.2"
-  JAVA_VERSION: "17"
-  ANDROID_HOME: "/usr/local/android-sdk"
-  ANDROID_SDK_CMDLINE_TOOLS: "/usr/local/android-sdk/cmdline-tools/latest"
-  ANDROID_SDK_URL: "https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip"
+image: cirrusci/android-sdk:30
 
-before_script:
-  - apt-get update && apt-get install -y curl unzip
-  - curl -sL https://deb.nodesource.com/setup_18.x | bash -
-  - apt-get install -y nodejs
-  - npm install -g npm@latest
-  - apt-get install -y ruby-full
-  - gem install bundler
-  - gem install fastlane
-  - bundle install
-  - chmod +x ./gradlew
-  - apt-get install -y openjdk-17-jdk
-  - java -version
-  - mkdir -p ${ANDROID_HOME}/cmdline-tools
-  - curl -sL ${ANDROID_SDK_URL} -o android-cmdline-tools.zip
-  - unzip android-cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
-  - rm android-cmdline-tools.zip
-  - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_SDK_CMDLINE_TOOLS}
+variables:
+  JAVA_VERSION: "17"
+  ANDROID_HOME: "/sdk"
+  ANDROID_SDK_CMDLINE_TOOLS: "${ANDROID_HOME}/cmdline-tools/latest"
+
+default:
+  before_script:
+    - apt-get update && apt-get install -y ruby-full curl unzip
+    - ruby -v
+    - gem install bundler fastlane
+    - bundler -v
+    - fastlane -v
+    - chmod +x ./gradlew
+    - apt-get install -y openjdk-${JAVA_VERSION}-jdk
+    - java -version
 
 setup:
   stage: setup
   script:
-    - ruby -v
-    - bundler -v
-    - fastlane -v
-    - bundle install
-    - echo "Android SDK installed at ${ANDROID_HOME}"
+    - echo "Using pre-installed Android SDK"
+    - echo "Android SDK located at ${ANDROID_HOME}"
+    - sdkmanager --list # التحقق من الأدوات المثبتة
 
 build:
   stage: build
   script:
     - echo "Starting the Android build"
+    - bundle install
     - bundle exec fastlane distribute
