@@ -1,5 +1,6 @@
 stages:
   - development
+  - production
 
 image: cirrusci/android-sdk:30
 
@@ -23,3 +24,15 @@ deploy to development:
     - echo "Starting the Android build"
     - bundle install
     - bundle exec fastlane distribute
+
+deploy to production:
+  stage: development
+  script:
+    - echo "Starting the Android build"
+    - bundle install
+    - bundle exec fastlane update_version_for_new_feature
+    - bundle exec fastlane distribute
+
+  only:
+    - /^feature.*$/
+    - /^feat.*$/
