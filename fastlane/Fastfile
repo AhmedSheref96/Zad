@@ -15,7 +15,6 @@ platform :android do
   end
 
   lane :increment_version do
-    accept_sdk_licenses
     latest_release = firebase_app_distribution_get_latest_release(
       app: ENV['APP_ID'],
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON']
