@@ -21,13 +21,10 @@ before_script:
   - chmod +x ./gradlew
   - apt-get install -y openjdk-17-jdk
   - java -version
-
-  # إعداد SDK الأندرويد
   - mkdir -p ${ANDROID_HOME}/cmdline-tools
   - curl -sL ${ANDROID_SDK_URL} -o android-cmdline-tools.zip
   - unzip android-cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
   - rm android-cmdline-tools.zip
-  # تأكد من أن الأدوات تم استخراجها في المسار الصحيح
   - mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_SDK_CMDLINE_TOOLS}
 
 setup:
