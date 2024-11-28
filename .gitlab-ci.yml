@@ -25,6 +25,10 @@ deploy to development:
     - bundle install
     - bundle exec fastlane distribute
 
+  only:
+    - /^feature.*$/
+    - /^feat.*$/
+
 deploy to production:
   stage: development
   script:
@@ -33,6 +37,4 @@ deploy to production:
     - bundle exec fastlane update_version_for_new_feature
     - bundle exec fastlane distribute
 
-  only:
-    - /^feature.*$/
-    - /^feat.*$/
+  only: null
