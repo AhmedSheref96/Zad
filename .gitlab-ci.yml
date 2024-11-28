@@ -1,13 +1,10 @@
 stages:
-  - setup
-  - build
+  - development
 
 image: cirrusci/android-sdk:30
 
 variables:
   JAVA_VERSION: "17"
-  ANDROID_HOME: "/sdk"
-  ANDROID_SDK_CMDLINE_TOOLS: "${ANDROID_HOME}/cmdline-tools/latest"
 
 default:
   before_script:
@@ -21,14 +18,7 @@ default:
     - java -version
 
 setup:
-  stage: setup
-  script:
-    - echo "Using pre-installed Android SDK"
-    - echo "Android SDK located at ${ANDROID_HOME}"
-    - sdkmanager --list # التحقق من الأدوات المثبتة
-
-build:
-  stage: build
+  stage: development
   script:
     - echo "Starting the Android build"
     - bundle install
