@@ -15,7 +15,7 @@ android {
         applicationId = "com.el3sas.zad"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1
+        versionCode = 100
         versionName = "v1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
