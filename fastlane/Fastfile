@@ -74,7 +74,7 @@ platform :android do
       branch_name = branch_name = get_branch_name()
 
       sh("git checkout #{branch_name}")
-      changes = `git status --porcelain`
+      changes =`git status --porcelain`
       if changes.empty?
         UI.message("No changes to commit. Skipping push.")
         return
