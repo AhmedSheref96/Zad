@@ -32,11 +32,11 @@ platform :android do
 
     branch_name = get_branch_name()
     sh("git checkout #{branch_name}")
-    changes =`git status --porcelain`
-    if changes.empty?
-      UI.message("No changes to commit. Skipping push.")
-      return
-    end
+#     changes =`git status --porcelain`
+#     if changes.empty?
+#       UI.message("No changes to commit. Skipping push.")
+#       return
+#     end
     sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name}")
 
     UI.message("Successfully committed and pushed version updates.")
@@ -79,11 +79,11 @@ platform :android do
       branch_name = branch_name = get_branch_name()
 
       sh("git checkout #{branch_name}")
-      changes =`git status --porcelain`
-      if changes.empty?
-        UI.message("No changes to commit. Skipping push.")
-        return
-      end
+#       changes =`git status --porcelain`
+#       if changes.empty?
+#         UI.message("No changes to commit. Skipping push.")
+#         return
+#       end
       sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name}")
       sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name} #{new_tag}")
 
