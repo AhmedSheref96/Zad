@@ -31,7 +31,12 @@ platform :android do
     sh('git commit -m "Update versionCode and versionName"')
 
     branch_name = get_branch_name()
-
+    sh("git checkout #{branch_name}")
+    changes =`git status --porcelain`
+    if changes.empty?
+      UI.message("No changes to commit. Skipping push.")
+      return
+    end
     sh("git push origin #{branch_name}")
 
     UI.message("Successfully committed and pushed version updates.")
