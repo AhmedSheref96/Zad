@@ -49,11 +49,18 @@ platform :android do
   def update_version_in_gradle(file_path, version_name, version_code)
     content = File.read(file_path)
 
-    # Update versionName and versionCode in the gradle file
+    # Step 1: Update versionName and versionCode in the gradle file
     content.gsub!(/versionName\s+"[\d.]+"/, "versionName \"#{version_name}\"")
     content.gsub!(/versionCode\s+\d+/, "versionCode #{version_code}")
 
     File.write(file_path, content)
+
+    # Step 2: Commit the changes to the repository
+    sh("git add #{gradle_file}")
+    sh('git commit -m "Update versionCode and versionName"')
+    sh("git push")
+
+    UI.message("Successfully committed and pushed version updates.")
   end
 
   lane :update_version_from_branch_tag do
@@ -65,7 +72,7 @@ platform :android do
     end
 
     # Step 2: Parse the tag (assumes format "x.y.z")
-    major, minor, patch = last_tag.split(".").map(&:to_i)
+    major, minor, patch = last_tag.gsub('v', '').split(".").map(&:to_i)
 
     # Increment the patch version
     new_patch = patch + 1
@@ -99,6 +106,7 @@ platform :android do
 
   desc "distribute to app distribution"
   lane :distribute do
+    update_version_from_branch_tag
     gradle(
       task: "assembleRelease"
     )
