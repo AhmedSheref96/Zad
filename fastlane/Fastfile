@@ -43,19 +43,20 @@ platform :android do
 
 
   def update_version_in_gradle(file_path, version_name, version_code)
-    full_path = File.expand_path(file_path)
-    unless File.exist?(full_path)
-      UI.user_error!("Gradle file not found at #{full_path}. Please check the path.")
+    unless File.exist?(file_path)
+      UI.user_error!("Gradle file not found at #{file_path}. Please check the path.")
     end
 
-    content = File.read(full_path)
+    content = File.read(file_path)
 
     # Step 1: Update versionName and versionCode in the gradle file
     content.gsub!(/versionName\s+"[\d.]+"/, "versionName \"#{version_name}\"")
     content.gsub!(/versionCode\s+\d+/, "versionCode #{version_code}")
 
-    File.write(full_path, content)
+    File.write(file_path, content)
 
+    # Step 2: Commit the changes to the repository
+    sh("git add #{file_path}")
     sh('git commit -m "Update versionCode and versionName"')
     sh("git push")
 
