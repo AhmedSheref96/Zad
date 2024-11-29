@@ -43,6 +43,10 @@ platform :android do
 
 
   def update_version_in_gradle(file_path, version_name, version_code)
+    unless File.exist?(file_path)
+      UI.user_error!("Gradle file not found at #{file_path}. Please check the path.")
+    end
+
     content = File.read(file_path)
 
     # Step 1: Update versionName and versionCode in the gradle file
