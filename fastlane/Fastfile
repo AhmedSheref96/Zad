@@ -76,11 +76,6 @@ platform :android do
     "v#{major}.#{minor}.#{patch}"
   end
 
-  # Function to push Gradle changes
-  def push_app_gradle_changes(gradle_file)
-    sh("git add #{gradle_file}")
-    sh("git commit -m 'Update version to latest tag'")
-  end
 
   # Fastlane lane
   lane :tag_commit_if_needed do
