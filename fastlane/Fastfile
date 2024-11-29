@@ -37,11 +37,6 @@ platform :android do
     UI.message("Successfully committed and pushed version updates.")
   end
 
-  # Function to fetch the branch name
-  def get_branch_name
-    `git rev-parse --abbrev-ref HEAD`.strip
-  end
-
   # Function to fetch the last tag for a branch, or fallback to the development branch
   def get_last_tag(branch_name)
     tag = `git describe --tags $(git rev-list --tags --max-count=1 --branches=#{branch_name}) 2>/dev/null`.strip
@@ -95,7 +90,7 @@ platform :android do
     # Check if the commit message contains "fixed", "solved", or "finished"
     if commit_message =~ /fixed|solved|finished/i
       # Step 2: Fetch branch and tag info
-      branch_name = get_branch_name
+      branch_name = get_branch_name()
       last_tag = get_last_tag(branch_name)
       version = parse_version(last_tag)
       new_tag = determine_next_version(branch_name, version)
