@@ -17,6 +17,11 @@ default:
     - chmod +x ./gradlew
     - apt-get install -y openjdk-${JAVA_VERSION}-jdk
     - java -version
+    - bundle install
+
+versioning:
+  script:
+    - bundle exec fastlane tag_commit_if_needed
 
 deploy to development:
   stage: development
