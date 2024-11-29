@@ -26,7 +26,7 @@ platform :android do
     UI.message("content = #{content}")
   end
 
-  lane :push_app_gradle_changes do
+  def push_app_gradle_changes(file_path)
     branch_name = get_branch_name()
     sh("git checkout #{branch_name}")
 
@@ -62,7 +62,7 @@ platform :android do
       # Step 3: Update the version in your Gradle file
       gradle_file = "../app/build.gradle.kts" # Adjust this path as needed
       update_version_in_gradle(gradle_file, new_tag, "#{patch}#{minor}#{major}")
-      push_app_gradle_changes
+      push_app_gradle_changes(gradle_file)
       # Step 5: Add a tag to the new commit
       sh("git tag #{new_tag}")
       UI.message("Tagging commit with tag: #{new_tag}")
