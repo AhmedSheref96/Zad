@@ -25,7 +25,17 @@ platform :android do
     # Step 2: Commit the changes to the repository
     sh("git add -u #{file_path}")
     sh('git commit -m "Update versionCode and versionName"')
-    sh("git push")
+
+    branch_name = `git rev-parse --abbrev-ref HEAD`.strip
+
+    if branch_name == "HEAD"
+      branch_name = `git branch --show-current`.strip
+    end
+    if branch_name.nil? || branch_name.empty?
+      UI.user_error!("Cannot determine the branch to push changes. Please check your Git state.")
+    end
+
+    sh("git push origin #{branch_name}")
 
     UI.message("Successfully committed and pushed version updates.")
   end
