@@ -8,39 +8,6 @@ platform :android do
     gradle(task: "test")
   end
 
-  desc "Build new development apk"
-  lane :development do
-#     gradle(task: "clean assembleRelease")
-    UI.message("App ID: #{ENV['APP_ID']}")
-  end
-
-#   lane :update_version_for_new_feature do
-#     # Step 1: Get the last created tag
-#     last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 || echo)").strip rescue nil
-#
-#     if last_tag.nil? || last_tag.empty?
-#       UI.message("No tags found, initializing with default version 0.0.1")
-#       last_tag = "0.0.0"
-#     end
-#
-#     # Parse the tag (assumes format "x.y.z")
-#     major, minor, patch = last_tag.split(".").map(&:to_i)
-#
-#     # Increment the patch version
-# #     new_patch = patch + 1
-#     new_tag = "#{major}.#{minor}.#{patch}"
-#
-#     # Set the version name and version code
-#     version_name = new_tag
-#     version_code = "#{major}#{minor}#{patch}".to_i
-#
-#     # Update version in build.gradle.kts
-#     gradle_file = "./app/build.gradle.kts" # Adjust path if needed
-#     update_version_in_gradle(gradle_file, version_name, version_code)
-#
-#     UI.success("Version updated successfully! New tag: #{new_tag}")
-#   end
-
 
   def update_version_in_gradle(file_path, version_name, version_code)
     unless File.exist?(file_path)
@@ -62,38 +29,6 @@ platform :android do
 
     UI.message("Successfully committed and pushed version updates.")
   end
-
-
-#   lane :update_version_from_branch_tag do
-#     # Step 1: Get the last tag in the current branch
-#     last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 --no-merges --first-parent)").strip
-#
-#     if last_tag.empty?
-#       UI.user_error!("No tags found in the current branch!")
-#     end
-#
-#     # Step 2: Parse the tag (assumes format "x.y.z")
-#     major, minor, patch = last_tag.gsub('v', '').split(".").map(&:to_i)
-#
-# #     # Increment the patch version
-# #     new_patch = patch + 1
-#     new_tag = "#{major}.#{minor}.#{patch}"
-#
-#     # Step 3: Set the version name and version code
-#     version_name = new_tag
-#     version_code = "#{major}#{minor}#{patch}".to_i
-#
-#     # Update the version name and version code in build.gradle.kts or other config file
-#     gradle_file = "./app/build.gradle.kts" # Adjust this path as needed
-#     update_version_in_gradle(gradle_file, version_name, version_code)
-#
-#     # Step 4: Tag the repository with the new tag (optional)
-#     sh("git tag #{new_tag}")
-#     sh("git push --tags")
-#
-#     UI.success("Version updated successfully! New tag: #{new_tag}")
-#   end
-
 
   lane :tag_commit_if_needed do
     # Step 1: Get the latest commit message
