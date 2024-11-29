@@ -46,15 +46,8 @@ deploy to development:
     - bundle install
     - bundle exec fastlane update_version_from_branch_tag
     - bundle exec fastlane distribute
-
   only:
-     refs:
-       - /^feature.*$/
-       - /^feat.*$/
-       - development
-       - tags
-     variables:
-       - $CI_COMMIT_TAG
+    - ff
 
 deploy to production:
   stage: development
