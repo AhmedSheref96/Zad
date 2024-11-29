@@ -20,8 +20,16 @@ default:
     - bundle install
 
 versioning:
+  stage:
+    - development
+    - production
   script:
     - bundle exec fastlane tag_commit_if_needed
+  only:
+    refs:
+      - /^feature.*$/
+      - /^feat.*$/
+      - development
 
 deploy to development:
   stage: development
