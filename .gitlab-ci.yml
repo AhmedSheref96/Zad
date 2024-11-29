@@ -31,7 +31,6 @@ deploy to development:
       - /^feat.*$/
       - development
     variables:
-      # Check if the last commit has a tag
       - $CI_COMMIT_TAG
 
 deploy to production:
