@@ -16,33 +16,35 @@ platform :android do
 
   lane :update_version_for_new_feature do
     # Step 1: Get the last created tag
-    last_tag = sh("git describe --tags `git rev-list --tags --max-count=1`").strip
+    last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 || echo)").strip rescue nil
 
-    if last_tag.empty?
-      UI.user_error!("No tags found in the repository!")
+    if last_tag.nil? || last_tag.empty?
+      UI.message("No tags found, initializing with default version 0.0.1")
+      last_tag = "0.0.0"
     end
 
-    # Step 2: Parse the tag (assumes format "x.y.z")
-    major, minor, _patch = last_tag.split(".").map(&:to_i)
+    # Parse the tag (assumes format "x.y.z")
+    major, minor, patch = last_tag.split(".").map(&:to_i)
 
-    # Increment the minor version and reset patch to 0
-    new_minor = minor + 1
-    new_tag = "#{major}.#{new_minor}.0"
+    # Increment the patch version
+    new_patch = patch + 1
+    new_tag = "#{major}.#{minor}.#{new_patch}"
 
-    # Step 3: Set the version name and code
+    # Set the version name and version code
     version_name = new_tag
-    version_code = "#{major}#{new_minor}0".to_i
+    version_code = "#{major}#{minor}#{new_patch}".to_i
 
-    # Update the version name and version code in build.gradle or any config file
-    gradle_file = "./app/build.gradle" # Update this path based on your project structure
+    # Update version in build.gradle
+    gradle_file = "./app/build.gradle" # Adjust path if needed
     update_version_in_gradle(gradle_file, version_name, version_code)
 
-    # Step 4: Tag the repository with the new tag (optional)
+    # Tag the repository with the new tag
     sh("git tag #{new_tag}")
     sh("git push --tags")
 
-    UI.success("Version updated successfully!")
+    UI.success("Version updated successfully! New tag: #{new_tag}")
   end
+
 
   def update_version_in_gradle(file_path, version_name, version_code)
     content = File.read(file_path)
@@ -101,11 +103,38 @@ platform :android do
     gradle(
       task: "assembleRelease" # Specify the Gradle task here
     )
+    release_notes = get_commits_from_last_tag
     release = firebase_app_distribution(
       app: ENV['APP_ID'],
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
+      release_notes: release_notes
       debug: false
     )
   end
+
+  lane :get_commits_from_last_tag do
+    # Step 1: Get the last tag
+    last_tag = sh("git describe --tags `git rev-list --tags --max-count=1`").strip
+
+    if last_tag.nil? || last_tag.empty?
+      UI.user_error!("No tags found in the repository!")
+    end
+
+    UI.message("Last tag found: #{last_tag}")
+
+    # Step 2: Get commits from the last tag to HEAD that start with 'BR-'
+    commit_messages = sh("git log #{last_tag}..HEAD --pretty=format:'%s' --grep='^BR-'").strip
+
+    if commit_messages.empty?
+      UI.message("No commits starting with 'BR-' found since last tag.")
+    else
+      UI.message("Commits found starting with 'BR-':")
+      UI.message(commit_messages)
+    end
+
+    # Return the commits for further processing if needed
+    return commit_messages
+  end
+
 
 end
