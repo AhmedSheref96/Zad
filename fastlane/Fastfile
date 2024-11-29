@@ -9,22 +9,22 @@ platform :android do
   end
 
   def get_branch_name()
-      branch_name = `git rev-parse --abbrev-ref HEAD`.strip
+    branch_name = `git rev-parse --abbrev-ref HEAD`.strip
 
-      if branch_name == "HEAD" || branch_name.nil? || branch_name.empty?
-        # إذا كانت حالة `detached HEAD`
-        UI.message("Detached HEAD state detected. Attempting to find a suitable branch...")
-        branch_name = `git branch -r --contains HEAD | grep -v HEAD | tail -1 | awk '{print $1}'`.strip
 
-        if branch_name.nil? || branch_name.empty?
-          UI.user_error!("Cannot determine a branch for the current detached HEAD state. Please check your Git state.")
-        end
+    if branch_name == "HEAD" || branch_name.nil? || branch_name.empty?
+      # إذا كانت حالة `detached HEAD`
+      UI.message("Detached HEAD state detected. Attempting to find a suitable branch...")
 
-      # تنظيف اسم الفرع المكتشف (حذف "origin/")
+      branch_name = `git branch -r --contains HEAD | grep -v HEAD | tail -1 | awk '{print $1}'`.strip
+
+      if branch_name.nil? || branch_name.empty?
+
+        UI.user_error!("Cannot determine a branch for the current detached HEAD state. Please check your Git state.")
+      end
       branch_name = branch_name.gsub("origin/", "")
-      branch_name
+    end
   end
-
 
   def update_version_in_gradle(file_path, version_name, version_code)
     unless File.exist?(file_path)
