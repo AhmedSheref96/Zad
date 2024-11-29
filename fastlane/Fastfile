@@ -102,6 +102,8 @@ platform :android do
       push_app_gradle_changes(gradle_file)
 
       # Step 4: Tag and push the commit
+      sh("git checkout #{branch_name}")
+
       sh("git tag #{new_tag}")
       UI.message("Tagging commit with tag: #{new_tag}")
 
