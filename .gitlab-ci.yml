@@ -36,9 +36,7 @@ versioning-prod:
     - bundle exec fastlane tag_commit_if_needed
   only:
     refs:
-      - /^feature.*$/
-      - /^feat.*$/
-      - development
+      - main
 
 deploy to development:
   stage: development
