@@ -81,14 +81,6 @@ platform :android do
     "v#{major}.#{minor}.#{patch}"
   end
 
-  # Function to update the version in the Gradle file
-  def update_version_in_gradle(gradle_file, new_tag, new_version_code)
-    # Replace versionCode and versionName in the Gradle file
-    sh("sed -i '' 's/versionCode.*/versionCode #{new_version_code}/g' #{gradle_file}")
-    sh("sed -i '' 's/versionName.*/versionName \"#{new_tag}\"/g' #{gradle_file}")
-    UI.message("Updated version in Gradle file to #{new_tag} (#{new_version_code}).")
-  end
-
   # Function to push Gradle changes
   def push_app_gradle_changes(gradle_file)
     sh("git add #{gradle_file}")
