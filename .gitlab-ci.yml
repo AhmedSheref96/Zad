@@ -19,9 +19,19 @@ default:
     - java -version
     - bundle install
 
-versioning:
+versioning-dev:
   stage:
     - development
+  script:
+    - bundle exec fastlane tag_commit_if_needed
+  only:
+    refs:
+      - /^feature.*$/
+      - /^feat.*$/
+      - development
+
+versioning-prod:
+  stage:
     - production
   script:
     - bundle exec fastlane tag_commit_if_needed
