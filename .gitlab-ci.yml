@@ -44,7 +44,6 @@ deploy to development:
   script:
     - echo "Starting the Android build"
     - bundle install
-    - bundle exec fastlane update_version_from_branch_tag
     - bundle exec fastlane distribute
   only:
     - ff
@@ -54,7 +53,6 @@ deploy to production:
   script:
     - echo "Starting the Android build"
     - bundle install
-    - bundle exec fastlane update_version_for_new_feature
     - bundle exec fastlane distribute
 
   only:

@@ -14,32 +14,32 @@ platform :android do
     UI.message("App ID: #{ENV['APP_ID']}")
   end
 
-  lane :update_version_for_new_feature do
-    # Step 1: Get the last created tag
-    last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 || echo)").strip rescue nil
-
-    if last_tag.nil? || last_tag.empty?
-      UI.message("No tags found, initializing with default version 0.0.1")
-      last_tag = "0.0.0"
-    end
-
-    # Parse the tag (assumes format "x.y.z")
-    major, minor, patch = last_tag.split(".").map(&:to_i)
-
-    # Increment the patch version
-#     new_patch = patch + 1
-    new_tag = "#{major}.#{minor}.#{patch}"
-
-    # Set the version name and version code
-    version_name = new_tag
-    version_code = "#{major}#{minor}#{patch}".to_i
-
-    # Update version in build.gradle.kts
-    gradle_file = "./app/build.gradle.kts" # Adjust path if needed
-    update_version_in_gradle(gradle_file, version_name, version_code)
-
-    UI.success("Version updated successfully! New tag: #{new_tag}")
-  end
+#   lane :update_version_for_new_feature do
+#     # Step 1: Get the last created tag
+#     last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 || echo)").strip rescue nil
+#
+#     if last_tag.nil? || last_tag.empty?
+#       UI.message("No tags found, initializing with default version 0.0.1")
+#       last_tag = "0.0.0"
+#     end
+#
+#     # Parse the tag (assumes format "x.y.z")
+#     major, minor, patch = last_tag.split(".").map(&:to_i)
+#
+#     # Increment the patch version
+# #     new_patch = patch + 1
+#     new_tag = "#{major}.#{minor}.#{patch}"
+#
+#     # Set the version name and version code
+#     version_name = new_tag
+#     version_code = "#{major}#{minor}#{patch}".to_i
+#
+#     # Update version in build.gradle.kts
+#     gradle_file = "./app/build.gradle.kts" # Adjust path if needed
+#     update_version_in_gradle(gradle_file, version_name, version_code)
+#
+#     UI.success("Version updated successfully! New tag: #{new_tag}")
+#   end
 
 
   def update_version_in_gradle(file_path, version_name, version_code)
@@ -52,42 +52,42 @@ platform :android do
     File.write(file_path, content)
 
     # Step 2: Commit the changes to the repository
-    sh("git add #{gradle_file}")
+    sh("git add #{file_path}")
     sh('git commit -m "Update versionCode and versionName"')
     sh("git push")
 
     UI.message("Successfully committed and pushed version updates.")
   end
 
-  lane :update_version_from_branch_tag do
-    # Step 1: Get the last tag in the current branch
-    last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 --no-merges --first-parent)").strip
-
-    if last_tag.empty?
-      UI.user_error!("No tags found in the current branch!")
-    end
-
-    # Step 2: Parse the tag (assumes format "x.y.z")
-    major, minor, patch = last_tag.gsub('v', '').split(".").map(&:to_i)
-
-#     # Increment the patch version
-#     new_patch = patch + 1
-    new_tag = "#{major}.#{minor}.#{patch}"
-
-    # Step 3: Set the version name and version code
-    version_name = new_tag
-    version_code = "#{major}#{minor}#{patch}".to_i
-
-    # Update the version name and version code in build.gradle.kts or other config file
-    gradle_file = "./app/build.gradle.kts" # Adjust this path as needed
-    update_version_in_gradle(gradle_file, version_name, version_code)
-
-    # Step 4: Tag the repository with the new tag (optional)
-    sh("git tag #{new_tag}")
-    sh("git push --tags")
-
-    UI.success("Version updated successfully! New tag: #{new_tag}")
-  end
+#   lane :update_version_from_branch_tag do
+#     # Step 1: Get the last tag in the current branch
+#     last_tag = sh("git describe --tags $(git rev-list --tags --max-count=1 --no-merges --first-parent)").strip
+#
+#     if last_tag.empty?
+#       UI.user_error!("No tags found in the current branch!")
+#     end
+#
+#     # Step 2: Parse the tag (assumes format "x.y.z")
+#     major, minor, patch = last_tag.gsub('v', '').split(".").map(&:to_i)
+#
+# #     # Increment the patch version
+# #     new_patch = patch + 1
+#     new_tag = "#{major}.#{minor}.#{patch}"
+#
+#     # Step 3: Set the version name and version code
+#     version_name = new_tag
+#     version_code = "#{major}#{minor}#{patch}".to_i
+#
+#     # Update the version name and version code in build.gradle.kts or other config file
+#     gradle_file = "./app/build.gradle.kts" # Adjust this path as needed
+#     update_version_in_gradle(gradle_file, version_name, version_code)
+#
+#     # Step 4: Tag the repository with the new tag (optional)
+#     sh("git tag #{new_tag}")
+#     sh("git push --tags")
+#
+#     UI.success("Version updated successfully! New tag: #{new_tag}")
+#   end
 
 
   lane :tag_commit_if_needed do
@@ -97,7 +97,7 @@ platform :android do
     # Check if the commit message contains "fixed", "solved", or "finished"
     if commit_message =~ /fixed|solved|finished/i
       # Step 2: Define your tag logic, for example, incrementing the last version tag
-      last_tag = sh("git describe --tags `git rev-list --tags --max-count=1`").strip
+      last_tag = sh("git describe --tags `git rev-list --tags --max-count=1` || echo 'v1.0.0'").strip
 
       if last_tag.nil? || last_tag.empty?
         last_tag = "v1.0.0"  # Default if no tags exist
@@ -112,15 +112,27 @@ platform :android do
       # Generate new tag
       new_tag = "v#{major}.#{minor}.#{patch}"
 
-      # Step 3: Add a tag to the commit
+      # Step 3: Update the version in your Gradle file
+      gradle_file = "./app/build.gradle.kts" # Adjust this path as needed
+      update_version_in_gradle(gradle_file, new_tag, "#{major}#{minor}#{patch}")
+
+      # Step 4: Stage and commit changes with a meaningful commit message
+      sh("git add #{gradle_file}")
+      commit_message = "Create 'stage name' version #{new_tag}" # Replace 'stage name' with actual stage
+      sh("git commit -m \"#{commit_message}\"")
+      UI.message("Created commit: #{commit_message}")
+
+      # Step 5: Add a tag to the new commit
       sh("git tag #{new_tag}")
       UI.message("Tagging commit with tag: #{new_tag}")
 
+      # Step 6: Push the commit and the tag to the remote repository
       gitlab_token = "glpat-z_5uXHyQceQxM-V-ZsH1"
+      gitlab_origin = "https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git"
 
-      # Step 4: Push the new tag to the remote repository
-      sh("git push https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git #{new_tag}")
-      UI.message("Pushed new tag #{new_tag} to remote repository.")
+      sh("git push #{gitlab_origin} HEAD")
+      sh("git push #{gitlab_origin} #{new_tag}")
+      UI.message("Pushed commit and tag #{new_tag} to remote repository.")
     else
       UI.message("No relevant commit message found. Skipping tag creation.")
     end
