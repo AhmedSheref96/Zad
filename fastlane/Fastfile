@@ -106,7 +106,7 @@ platform :android do
     release = firebase_app_distribution(
       app: ENV['APP_ID'],
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
-      release_notes: release_notes
+      release_notes: release_notes,
       debug: false
     )
   end
