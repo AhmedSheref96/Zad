@@ -116,26 +116,27 @@ platform :android do
     last_tag = sh("git rev-list --tags --max-count=1 | xargs -I {} git describe --tags {} || echo ''").strip
 
     if last_tag.nil? || last_tag.empty?
-      UI.message("No tags found in the repository! Defaulting to initial version.")
-      last_tag = "0.0.0" # You can set a default value for your use case.
+      UI.message("No tags found in the repository! Fetching all commits in the branch starting with 'BR-'.")
+
+      # Step 2 (Fallback): Get all commits in the branch that start with 'BR-'
+      commit_messages = sh("git log --pretty=format:'%s' --grep='^BR-' || echo ''").strip
     else
       UI.message("Last tag found: #{last_tag}")
+
+      # Step 3: Get commits from the last tag to HEAD that start with 'BR-'
+      commit_messages = sh("git log #{last_tag}..HEAD --pretty=format:'%s' --grep='^BR-' || echo ''").strip
     end
 
-    # Step 2: Get commits from the last tag to HEAD that start with 'BR-'
-    commit_messages = sh("git log #{last_tag}..HEAD --pretty=format:'%s' --grep='^BR-' || echo ''").strip
-
     if commit_messages.empty?
-      UI.message("No commits starting with 'BR-' found since last tag.")
+      UI.message("No commits starting with 'BR-' found.")
     else
       UI.message("Commits found starting with 'BR-':")
       UI.message(commit_messages)
     end
 
+    # Implicitly return commit_messages
     commit_messages
   end
-
-
 
 
 end
