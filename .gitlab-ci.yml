@@ -20,8 +20,7 @@ default:
     - bundle install
 
 versioning-dev:
-  stage:
-    - development
+  stage: development
   script:
     - bundle exec fastlane tag_commit_if_needed
   only:
@@ -31,8 +30,7 @@ versioning-dev:
       - development
 
 versioning-prod:
-  stage:
-    - production
+  stage: production
   script:
     - bundle exec fastlane tag_commit_if_needed
   only:
