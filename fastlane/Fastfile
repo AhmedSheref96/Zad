@@ -8,22 +8,27 @@ platform :android do
     gradle(task: "test")
   end
 
-  def get_branch_name()
+  def get_branch_name
+    # Step 1: Get the current branch name
     branch_name = `git rev-parse --abbrev-ref HEAD`.strip
 
-
     if branch_name == "HEAD" || branch_name.nil? || branch_name.empty?
-      # إذا كانت حالة `detached HEAD`
+      # Handle detached HEAD state
       UI.message("Detached HEAD state detected. Attempting to find a suitable branch...")
 
-      branch_name = `git branch -r --contains HEAD | grep -v HEAD | tail -1 | awk '{print $1}'`.strip
+      # Find a branch containing the current commit
+      branches = `git branch -r --contains HEAD`.strip.split("\n")
+      branches.map! { |b| b.strip.gsub("origin/", "") } # Clean up branch names
+
+      # Select the first suitable branch
+      branch_name = branches.first
 
       if branch_name.nil? || branch_name.empty?
-
         UI.user_error!("Cannot determine a branch for the current detached HEAD state. Please check your Git state.")
       end
-      branch_name = branch_name.gsub("origin/", "")
     end
+
+    UI.message("Working on branch: #{branch_name}")
     branch_name
   end
 
