@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             ZadTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Text(
-                        text = "Hello World!",
+                        text = "Hello World!!",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
