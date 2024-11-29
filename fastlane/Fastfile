@@ -24,6 +24,7 @@ platform :android do
       end
       branch_name = branch_name.gsub("origin/", "")
     end
+    branch_name
   end
 
   def update_version_in_gradle(file_path, version_name, version_code)
