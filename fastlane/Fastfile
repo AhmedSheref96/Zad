@@ -111,28 +111,30 @@ platform :android do
     )
   end
 
-  lane :get_commits_from_last_tag do
-    # Step 1: Get the last tag
-    last_tag = sh("git describe --tags `git rev-list --tags --max-count=1`").strip
+ lane :get_commits_from_last_tag do
+   # Step 1: Get the last tag
+   last_tag = sh("git rev-list --tags --max-count=1 | xargs -I {} git describe --tags {} || echo ''").strip
 
-    if last_tag.nil? || last_tag.empty?
-      UI.user_error!("No tags found in the repository!")
-    end
+   if last_tag.nil? || last_tag.empty?
+     UI.message("No tags found in the repository! Defaulting to initial version.")
+     last_tag = "0.0.0" # You can set a default value for your use case.
+   else
+     UI.message("Last tag found: #{last_tag}")
+   end
 
-    UI.message("Last tag found: #{last_tag}")
+   # Step 2: Get commits from the last tag to HEAD that start with 'BR-'
+   commit_messages = sh("git log #{last_tag}..HEAD --pretty=format:'%s' --grep='^BR-' || echo ''").strip
 
-    # Step 2: Get commits from the last tag to HEAD that start with 'BR-'
-    commit_messages = sh("git log #{last_tag}..HEAD --pretty=format:'%s' --grep='^BR-'").strip
+   if commit_messages.empty?
+     UI.message("No commits starting with 'BR-' found since last tag.")
+   else
+     UI.message("Commits found starting with 'BR-':")
+     UI.message(commit_messages)
+   end
 
-    if commit_messages.empty?
-      UI.message("No commits starting with 'BR-' found since last tag.")
-    else
-      UI.message("Commits found starting with 'BR-':")
-      UI.message(commit_messages)
-    end
+   return commit_messages
+ end
 
-    return commit_messages
-  end
 
 
 end
