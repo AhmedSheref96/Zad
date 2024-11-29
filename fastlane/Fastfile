@@ -8,6 +8,23 @@ platform :android do
     gradle(task: "test")
   end
 
+  def get_branch_name()
+      branch_name = `git rev-parse --abbrev-ref HEAD`.strip
+
+      if branch_name == "HEAD" || branch_name.nil? || branch_name.empty?
+        # إذا كانت حالة `detached HEAD`
+        UI.message("Detached HEAD state detected. Attempting to find a suitable branch...")
+        branch_name = `git branch -r --contains HEAD | grep -v HEAD | tail -1 | awk '{print $1}'`.strip
+
+        if branch_name.nil? || branch_name.empty?
+          UI.user_error!("Cannot determine a branch for the current detached HEAD state. Please check your Git state.")
+        end
+
+        # تنظيف اسم الفرع المكتشف (حذف "origin/")
+        branch_name = branch_name.gsub("origin/", "")
+        branch_name
+      end
+
 
   def update_version_in_gradle(file_path, version_name, version_code)
     unless File.exist?(file_path)
@@ -26,14 +43,7 @@ platform :android do
     sh("git add -u #{file_path}")
     sh('git commit -m "Update versionCode and versionName"')
 
-    branch_name = `git rev-parse --abbrev-ref HEAD`.strip
-
-    if branch_name == "HEAD"
-      branch_name = `git branch --show-current`.strip
-    end
-    if branch_name.nil? || branch_name.empty?
-      UI.user_error!("Cannot determine the branch to push changes. Please check your Git state.")
-    end
+    branch_name = get_branch_name()
 
     sh("git push origin #{branch_name}")
 
@@ -75,18 +85,8 @@ platform :android do
 #       gitlab_origin = "https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git"
 
       # الحصول على اسم الفرع الحالي
-      branch_name = `git rev-parse --abbrev-ref HEAD`.strip
+      branch_name = branch_name = get_branch_name()
 
-      if branch_name == "HEAD"
-        # حالة detached HEAD
-        branch_name = `git branch --show-current`.strip
-      end
-
-      if branch_name.nil? || branch_name.empty?
-        UI.user_error!("Cannot determine the branch to push changes. Please check your Git state.")
-      end
-
-      # دفع التغييرات إلى الفرع
       sh("git push origin #{branch_name}")
       sh("git push origin #{branch_name} #{new_tag}")
 
