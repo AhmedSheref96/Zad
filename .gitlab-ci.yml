@@ -26,12 +26,12 @@ deploy to development:
     - bundle exec fastlane distribute
 
   only:
-    refs:
-      - /^feature.*$/
-      - /^feat.*$/
-      - development
-    variables:
-      - $CI_COMMIT_TAG
+     refs:
+       - /^feature.*$/
+       - /^feat.*$/
+       - development
+       - tags
+     variables:
 
 deploy to production:
   stage: development
