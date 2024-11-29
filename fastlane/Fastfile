@@ -26,17 +26,13 @@ platform :android do
     File.write(file_path, content)
     UI.message("content = #{content}")
 
-    # Step 2: Commit the changes to the repository
-    sh("git add -u #{file_path}")
-    sh('git commit -m "Update versionCode and versionName"')
 
+    # Step 2: Commit the changes to the repository
     branch_name = get_branch_name()
     sh("git checkout #{branch_name}")
-#     changes =`git status --porcelain`
-#     if changes.empty?
-#       UI.message("No changes to commit. Skipping push.")
-#       return
-#     end
+
+    sh("git add -u #{file_path}")
+    sh('git commit -m "Update versionCode and versionName"')
     sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name}")
 
     UI.message("Successfully committed and pushed version updates.")
@@ -72,18 +68,10 @@ platform :android do
       sh("git tag #{new_tag}")
       UI.message("Tagging commit with tag: #{new_tag}")
 
-      # Step 6: Push the commit and the tag to the remote repository
-#       gitlab_token = "glpat-z_5uXHyQceQxM-V-ZsH1"
-#       gitlab_origin = "https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git"
-
       branch_name = branch_name = get_branch_name()
 
       sh("git checkout #{branch_name}")
-#       changes =`git status --porcelain`
-#       if changes.empty?
-#         UI.message("No changes to commit. Skipping push.")
-#         return
-#       end
+
       sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name}")
       sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name} #{new_tag}")
 
