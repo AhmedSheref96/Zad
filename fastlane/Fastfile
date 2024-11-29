@@ -61,11 +61,25 @@ platform :android do
       UI.message("Tagging commit with tag: #{new_tag}")
 
       # Step 6: Push the commit and the tag to the remote repository
-      gitlab_token = "glpat-z_5uXHyQceQxM-V-ZsH1"
-      gitlab_origin = "https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git"
+#       gitlab_token = "glpat-z_5uXHyQceQxM-V-ZsH1"
+#       gitlab_origin = "https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git"
 
-      sh("git push #{gitlab_origin} HEAD")
-      sh("git push #{gitlab_origin} #{new_tag}")
+      # الحصول على اسم الفرع الحالي
+      branch_name = `git rev-parse --abbrev-ref HEAD`.strip
+
+      if branch_name == "HEAD"
+        # حالة detached HEAD
+        branch_name = `git branch --show-current`.strip
+      end
+
+      if branch_name.nil? || branch_name.empty?
+        UI.user_error!("Cannot determine the branch to push changes. Please check your Git state.")
+      end
+
+      # دفع التغييرات إلى الفرع
+      sh("git push origin #{branch_name}")
+      sh("git push origin #{branch_name} #{new_tag}")
+
       UI.message("Pushed commit and tag #{new_tag} to remote repository.")
     else
       UI.message("No relevant commit message found. Skipping tag creation.")
