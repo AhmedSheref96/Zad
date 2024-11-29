@@ -49,7 +49,7 @@ platform :android do
     content.gsub!(/versionName\s+"[\d.]+"/, "versionName \"#{version_name}\"")
     content.gsub!(/versionCode\s+\d+/, "versionCode #{version_code}")
 
-    File.write(file_path, content)
+    File.write(gradle_file, content)
 
     # Step 2: Commit the changes to the repository
     sh("git add #{file_path}")
