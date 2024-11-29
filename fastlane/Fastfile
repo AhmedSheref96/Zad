@@ -57,11 +57,11 @@ platform :android do
       patch = version_parts[2].to_i + 1  # Increment the patch version
 
       # Generate new tag
-      new_tag = "v#{patch}.#{minor}.#{major}"
+      new_tag = "v#{major}.#{minor}.#{patch}"
 
       # Step 3: Update the version in your Gradle file
       gradle_file = "../app/build.gradle.kts" # Adjust this path as needed
-      update_version_in_gradle(gradle_file, new_tag, "#{patch}#{minor}#{major}")
+      update_version_in_gradle(gradle_file, new_tag, "#{major}#{minor}#{patch}")
       push_app_gradle_changes(gradle_file)
       # Step 5: Add a tag to the new commit
       sh("git tag #{new_tag}")
