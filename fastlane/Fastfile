@@ -37,7 +37,7 @@ platform :android do
       UI.message("No changes to commit. Skipping push.")
       return
     end
-    sh("git push origin #{branch_name}")
+    sh("git push origin #{ENV['GITHUB_ORIGIN']} #{branch_name}")
 
     UI.message("Successfully committed and pushed version updates.")
   end
@@ -84,8 +84,8 @@ platform :android do
         UI.message("No changes to commit. Skipping push.")
         return
       end
-      sh("git push origin #{branch_name}")
-      sh("git push origin #{branch_name} #{new_tag}")
+      sh("git push origin #{ENV['GITHUB_ORIGIN']} #{branch_name}")
+      sh("git push origin #{ENV['GITHUB_ORIGIN']} #{branch_name} #{new_tag}")
 
       UI.message("Pushed commit and tag #{new_tag} to remote repository.")
     else
