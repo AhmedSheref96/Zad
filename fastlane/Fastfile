@@ -117,7 +117,7 @@ platform :android do
       UI.message("Tagging commit with tag: #{new_tag}")
 
       # Step 4: Push the new tag to the remote repository
-      sh("git push https://glpat-z_5uXHyQceQxM-V-ZsH1@gitlab.com/AhmedSheref96/zad.git #{new_tag}")
+      sh("git push git@gitlab.com:AhmedSheref96/zad.git #{new_tag}")
       UI.message("Pushed new tag #{new_tag} to remote repository.")
     else
       UI.message("No relevant commit message found. Skipping tag creation.")
