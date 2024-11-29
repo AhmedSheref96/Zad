@@ -6,6 +6,7 @@ image: cirrusci/android-sdk:30
 
 variables:
   JAVA_VERSION: "17"
+  GIT_BRANCH: $CI_COMMIT_REF_NAME
 
 default:
   before_script:

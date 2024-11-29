@@ -9,28 +9,7 @@ platform :android do
   end
 
   def get_branch_name
-    # Step 1: Get the current branch name
-    branch_name = `git rev-parse --abbrev-ref HEAD`.strip
-
-    if branch_name == "HEAD" || branch_name.nil? || branch_name.empty?
-      # Handle detached HEAD state
-      UI.message("Detached HEAD state detected. Attempting to find a suitable branch...")
-
-      # Find a branch containing the current commit
-      branches = `git branch -r --contains HEAD`.strip.split("\n")
-      branches.map! { |b| b.strip.gsub("origin/", "") } # Clean up branch names
-
-      if branches.empty?
-        UI.user_error!("Cannot find any branches containing the current commit. Please check your Git state.")
-      else
-        # Select the first suitable branch
-        branch_name = branches.first
-        UI.message("Using branch: #{branch_name}")
-      end
-    end
-
-    UI.message("Working on branch: #{branch_name}")
-    branch_name
+    branch_name = ENV['GIT_BRANCH']
   end
 
 
