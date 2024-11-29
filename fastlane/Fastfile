@@ -37,64 +37,86 @@ platform :android do
     UI.message("Successfully committed and pushed version updates.")
   end
 
+  # Function to fetch the branch name
+  def get_branch_name
+    `git rev-parse --abbrev-ref HEAD`.strip
+  end
+
+  # Function to fetch the last tag for a branch, or fallback to the development branch
+  def get_last_tag(branch_name)
+    tag = `git describe --tags $(git rev-list --tags --max-count=1 --branches=#{branch_name}) 2>/dev/null`.strip
+    if tag.nil? || tag.empty?
+      tag = `git describe --tags $(git rev-list --tags --max-count=1 --branches=development) 2>/dev/null`.strip
+    end
+    tag.empty? ? 'v1.0.0' : tag
+  end
+
+  # Function to parse the version tag into components
+  def parse_version(tag)
+    version_parts = tag.gsub('v', '').split('.')
+    major = version_parts[0].to_i
+    minor = version_parts[1].to_i
+    patch = version_parts[2].to_i
+    { major: major, minor: minor, patch: patch }
+  end
+
+  # Function to determine the next version based on branch and commit count
+  def determine_next_version(branch_name, version)
+    major = version[:major]
+    minor = version[:minor]
+    patch = version[:patch]
+
+    if branch_name.start_with?('feat')
+      commit_count = `git rev-list #{branch_name} --count`.strip.to_i
+      if commit_count == 1
+        minor += 1
+        patch = 0
+      else
+        patch += 1
+      end
+    else
+      patch += 1
+    end
+
+    "v#{major}.#{minor}.#{patch}"
+  end
+
+  # Function to update the version in the Gradle file
+  def update_version_in_gradle(gradle_file, new_tag, new_version_code)
+    # Replace versionCode and versionName in the Gradle file
+    sh("sed -i '' 's/versionCode.*/versionCode #{new_version_code}/g' #{gradle_file}")
+    sh("sed -i '' 's/versionName.*/versionName \"#{new_tag}\"/g' #{gradle_file}")
+    UI.message("Updated version in Gradle file to #{new_tag} (#{new_version_code}).")
+  end
+
+  # Function to push Gradle changes
+  def push_app_gradle_changes(gradle_file)
+    sh("git add #{gradle_file}")
+    sh("git commit -m 'Update version to latest tag'")
+  end
+
+  # Fastlane lane
   lane :tag_commit_if_needed do
     # Step 1: Get the latest commit message
     commit_message = sh("git log -1 --pretty=%B").strip
 
     # Check if the commit message contains "fixed", "solved", or "finished"
     if commit_message =~ /fixed|solved|finished/i
-      # Step 2: Define your tag logic, for example, incrementing the last version tag
+      # Step 2: Fetch branch and tag info
+      branch_name = get_branch_name
+      last_tag = get_last_tag(branch_name)
+      version = parse_version(last_tag)
+      new_tag = determine_next_version(branch_name, version)
+      new_version_code = new_tag.gsub('v', '').gsub('.', '')
 
-      # Fetch the branch name
-      branch_name = get_branch_name()
-
-      # Fetch the last tag specific to the current branch
-      last_tag = `git describe --tags $(git rev-list --tags --max-count=1 --branches=#{branch_name}) 2>/dev/null`.strip
-
-      # If no tag is found in the current branch, fetch the tag from the development branch
-      if last_tag.nil? || last_tag.empty?
-        last_tag = `git describe --tags $(git rev-list --tags --max-count=1 --branches=development) 2>/dev/null`.strip
-      end
-
-      # Fallback to default tag if still no tag is found
-      last_tag = 'v1.0.0' if last_tag.nil? || last_tag.empty?
-
-      # Extract version components from the tag, assuming format v1.2.3
-      version_parts = last_tag.gsub('v', '').split('.')
-      major = version_parts[0].to_i
-      minor = version_parts[1].to_i
-      patch = version_parts[2].to_i
-
-      # Check if the branch name starts with 'feat'
-      if branch_name.start_with?('feat')
-        # Check if this is the first commit in the branch
-        commit_count = `git rev-list #{branch_name} --count`.strip.to_i
-        if commit_count == 1
-          minor += 1  # Increment minor if it's the first commit in a 'feat' branch
-          patch = 0   # Reset patch version
-        else
-          patch += 1  # Increment patch if it's not the first commit
-        end
-      else
-        # Default behavior: increment patch version
-        patch += 1
-      end
-
-      # Generate the new tag
-      new_tag = "v#{major}.#{minor}.#{patch}"
-      new_version_code = new_tag.gsub('v','').gsub('.','')
-
-      # Step 3: Update the version in your Gradle file
+      # Step 3: Update version in Gradle
       gradle_file = "../app/build.gradle.kts" # Adjust this path as needed
       update_version_in_gradle(gradle_file, new_tag, new_version_code)
       push_app_gradle_changes(gradle_file)
-      # Step 5: Add a tag to the new commit
+
+      # Step 4: Tag and push the commit
       sh("git tag #{new_tag}")
       UI.message("Tagging commit with tag: #{new_tag}")
-
-      branch_name = branch_name = get_branch_name()
-
-      sh("git checkout #{branch_name}")
 
       sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name}")
       sh("git push #{ENV['GITHUB_ORIGIN']} #{branch_name} #{new_tag}")
@@ -104,6 +126,7 @@ platform :android do
       UI.message("No relevant commit message found. Skipping tag creation.")
     end
   end
+
 
   desc "Test update version"
   lane :test_update_version do|options|
