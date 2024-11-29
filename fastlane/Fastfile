@@ -99,9 +99,8 @@ platform :android do
 
   desc "distribute to app distribution"
   lane :distribute do
-    # Build the Android app using the gradle task
     gradle(
-      task: "assembleRelease" # Specify the Gradle task here
+      task: "assembleRelease"
     )
     release_notes = get_commits_from_last_tag
     release = firebase_app_distribution(
@@ -132,7 +131,6 @@ platform :android do
       UI.message(commit_messages)
     end
 
-    # Return the commits for further processing if needed
     return commit_messages
   end
 
