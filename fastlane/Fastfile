@@ -71,9 +71,14 @@ platform :android do
 #       gitlab_token = "glpat-z_5uXHyQceQxM-V-ZsH1"
 #       gitlab_origin = "https://oauth2:#{gitlab_token}@gitlab.com/AhmedSheref96/zad.git"
 
-      # الحصول على اسم الفرع الحالي
       branch_name = branch_name = get_branch_name()
 
+      sh("git checkout #{branch_name}")
+      changes = `git status --porcelain`
+      if changes.empty?
+        UI.message("No changes to commit. Skipping push.")
+        return
+      end
       sh("git push origin #{branch_name}")
       sh("git push origin #{branch_name} #{new_tag}")
 
