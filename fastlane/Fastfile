@@ -119,10 +119,10 @@ platform :android do
       # Step 3: Update the version in your Gradle file
       gradle_file = "./app/build.gradle.kts" # Adjust this path as needed
       update_version_in_gradle(gradle_file, new_tag, "#{major}#{minor}#{patch}")
-
-      commit_message = "Create version #{new_tag}" # Replace 'stage name' with actual stage
-      sh("git commit -m \"#{commit_message}\"")
-      UI.message("Created commit: #{commit_message}")
+#
+#       commit_message = "Create version #{new_tag}" # Replace 'stage name' with actual stage
+#       sh("git commit -m \"#{commit_message}\"")
+#       UI.message("Created commit: #{commit_message}")
 
       # Step 5: Add a tag to the new commit
       sh("git tag #{new_tag}")
