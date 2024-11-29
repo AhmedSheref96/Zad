@@ -107,6 +107,7 @@ platform :android do
       app: ENV['APP_ID'],
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
       release_notes: release_notes,
+      groups: "operations-team,qa-team",
       debug: false
     )
   end
