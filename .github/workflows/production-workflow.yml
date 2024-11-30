@@ -36,8 +36,9 @@ jobs:
 
       - name: Set execute permission for gradlew (if using Gradle)
         run: chmod +x ./gradlew
+
       - name: set branch name
-        run: export GIT_BRANCH=${{ github.ref_name }} fastlane
+        run: export GIT_BRANCH=$github.ref_name fastlane
 
       - name: Run Fastlane Lane
         run: bundle exec fastlane tag_commit_if_needed
