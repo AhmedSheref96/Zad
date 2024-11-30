@@ -36,6 +36,8 @@ platform :android do
     branch_name = get_branch_name()
     sh("git checkout #{branch_name}")
 
+    UI.message("origin = #{ENV['ORIGIN']}")
+
     sh("git add -u #{file_path}")
     sh('git commit -m "Update versionCode and versionName"')
     sh("git push #{ENV['ORIGIN']} #{branch_name}")
