@@ -37,6 +37,7 @@ jobs:
 
       - name: Set execute permission for gradlew (if using Gradle)
         run: chmod +x ./gradlew
+
       - name: set branch name
         env:
           GIT_BRANCH: ${{ github.ref_name }}
