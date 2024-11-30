@@ -35,6 +35,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set up Git identity
+        run: |
+          git config --global user.email "ahmed.sheref.3.96@gmail.com"
+          git config --global user.name "ahmed sheref"
+
       - name: Set execute permission for gradlew (if using Gradle)
         run: chmod +x ./gradlew
 
