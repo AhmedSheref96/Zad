@@ -68,6 +68,7 @@ platform :android do
 
   # Function to determine the next version based on branch and commit count
   def determine_next_version(branch_name, version)
+    UI.message("current branch  = #{branch_name}")
     major = version[:major]
     minor = version[:minor]
     patch = version[:patch]
@@ -99,6 +100,7 @@ platform :android do
       branch_name = get_branch_name()
       last_tag = get_last_tag(branch_name)
       version = parse_version(last_tag)
+      UI.message("current branch  = #{branch_name}")
       new_tag = determine_next_version(branch_name, version)
       new_version_code = new_tag.gsub('v', '').gsub('.', '')
 
