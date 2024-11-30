@@ -19,7 +19,6 @@ default:
     - apt-get install -y openjdk-${JAVA_VERSION}-jdk
     - java -version
     - bundle install
-    - bundle exec fastlane init_origin
 
 versioning-dev:
   stage: development

@@ -7,6 +7,9 @@ platform :android do
   lane :test do
     gradle(task: "test")
   end
+  before_all do
+    init_origin
+  end
 
   def get_branch_name
     branch_name = ENV['GIT_BRANCH']
