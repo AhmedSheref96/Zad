@@ -164,17 +164,9 @@ platform :android do
 
   desc "Init origin"
   lane :init_origin do
-    # Ensure GITLAB_TOKEN is set
-    if ENV['GITLAB_TOKEN'].to_s.empty?
-      UI.error("GITLAB_TOKEN is not set!")
-      return
-    end
-
-    # Construct the ORIGIN URL dynamically
     origin_url = "https://oauth2:#{ENV['GITLAB_TOKEN']}@gitlab.com/AhmedSheref96/zad.git"
-
-    # Set the ORIGIN environment variable
     ENV['ORIGIN'] = origin_url
+    UI.message("origin = #{ENV['ORIGIN']}")
   end
 
 end
