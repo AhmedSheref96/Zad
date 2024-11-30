@@ -162,5 +162,9 @@ platform :android do
     commit_messages
   end
 
+  desc "Init origin"
+  lane :init_origin do
+      ENV['ORIGIN'] = "https://oauth2:#{GITLAB_TOKEN}@gitlab.com/AhmedSheref96/zad.git"
+  end
 
 end
