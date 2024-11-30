@@ -10,6 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      ORIGIN: ${{ secrets.ORIGIN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
