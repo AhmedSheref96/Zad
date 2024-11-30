@@ -41,6 +41,8 @@ jobs:
       - name: set branch name
         env:
           GIT_BRANCH: ${{ github.ref_name }}
+        run: echo "Current branch is $GIT_BRANCH"
+
       - name: Run Fastlane Lane
         run: bundle exec fastlane tag_commit_if_needed
 
