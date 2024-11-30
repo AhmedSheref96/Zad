@@ -23,14 +23,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Runs all the tests
 
-### android push_app_gradle_changes
-
-```sh
-[bundle exec] fastlane android push_app_gradle_changes
-```
-
-
-
 ### android tag_commit_if_needed
 
 ```sh
@@ -62,6 +54,14 @@ distribute to app distribution
 ```
 
 
+
+### android init_origin
+
+```sh
+[bundle exec] fastlane android init_origin
+```
+
+Init origin
 
 ----
 
