@@ -12,6 +12,12 @@ platform :android do
     branch_name = ENV['GIT_BRANCH']
   end
 
+  desc "Init origin"
+  lane :init_origin do
+    origin_url = "https://oauth2:#{ENV['GITLAB_TOKEN']}@gitlab.com/AhmedSheref96/zad.git"
+    ENV['ORIGIN'] = origin_url
+    UI.message("origin = #{ENV['ORIGIN']}")
+  end
 
   def update_version_in_gradle(file_path, version_name, version_code)
     unless File.exist?(file_path)
@@ -162,11 +168,5 @@ platform :android do
     commit_messages
   end
 
-  desc "Init origin"
-  lane :init_origin do
-    origin_url = "https://oauth2:#{ENV['GITLAB_TOKEN']}@gitlab.com/AhmedSheref96/zad.git"
-    ENV['ORIGIN'] = origin_url
-    UI.message("origin = #{ENV['ORIGIN']}")
-  end
 
 end
