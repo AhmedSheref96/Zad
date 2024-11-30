@@ -1,4 +1,4 @@
-name: Development
+name: Production
 
 on:
   push:
@@ -37,8 +37,8 @@ jobs:
       - name: Set execute permission for gradlew (if using Gradle)
         run: chmod +x ./gradlew
       - name: set branch name
-        env:
-          GIT_BRANCH: ${{ github.ref_name }}
+        run: export GIT_BRANCH=$github.ref_name
+
       - name: Run Fastlane Lane
         run: bundle exec fastlane tag_commit_if_needed
 

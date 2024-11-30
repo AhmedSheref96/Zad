@@ -39,9 +39,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: set branch name
-        env:
-          GIT_BRANCH: ${{ github.ref_name }}
-        run: echo "Current branch is $GIT_BRANCH"
+        run: export GIT_BRANCH=$github.ref_name
 
       - name: Run Fastlane Lane
         run: bundle exec fastlane tag_commit_if_needed
