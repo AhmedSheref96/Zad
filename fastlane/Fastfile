@@ -113,7 +113,6 @@ platform :android do
       sh("git tag #{new_tag}")
       UI.message("Tagging commit with tag: #{new_tag}")
 
-      sh("git push #{ENV['ORIGIN']} #{branch_name}")
       sh("git push #{ENV['ORIGIN']} #{branch_name} #{new_tag}")
 
       UI.message("Pushed commit and tag #{new_tag} to remote repository.")
