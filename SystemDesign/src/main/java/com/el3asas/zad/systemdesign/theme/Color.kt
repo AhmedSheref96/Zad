@@ -1,4 +1,4 @@
-package com.el3sas.zad.ui.theme
+package com.el3asas.zad.systemdesign.theme
 
 import androidx.compose.ui.graphics.Color
 

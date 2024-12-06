@@ -1,5 +1,3 @@
-import com.android.utils.TraceUtils.simpleId
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -24,12 +22,26 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            val keystorePath = System.getenv("KEYSTORE_PATH") ?: "local/path/to/keystore.jks"
+            val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "local_keystore_password"
+            val keystoreAlias = System.getenv("KEY_ALIAS") ?: "local_key_alias"
+            val keystoreKEYPassword = System.getenv("KEY_PASSWORD") ?: "local_key_password"
+
+            storeFile = file(keystorePath)
+            storePassword = keystorePassword
+            keyAlias = keystoreAlias
+            keyPassword = keystoreKEYPassword
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -74,5 +86,5 @@ dependencies {
     implementation(platform(libs.firebaseBom))
     implementation(libs.firebaseCrashlyticsKtx)
     implementation(libs.firebaseAnalyticsKtx)
-
+    implementation(project(":SystemDesign"))
 }
