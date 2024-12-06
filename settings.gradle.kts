@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Zad"
 include(":app")
 include(":feat-courses")
-include(":SystemDesign")
+include(":system-design")

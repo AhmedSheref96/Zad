@@ -86,5 +86,5 @@ dependencies {
     implementation(platform(libs.firebaseBom))
     implementation(libs.firebaseCrashlyticsKtx)
     implementation(libs.firebaseAnalyticsKtx)
-    implementation(project(":SystemDesign"))
+    implementation(project(":system-design"))
 }
