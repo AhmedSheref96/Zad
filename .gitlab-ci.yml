@@ -46,9 +46,6 @@ deploy to development:
     - bundle exec fastlane distribute
   only:
     refs:
-      - /^feature.*$/
-      - /^feat.*$/
-      - development
       - tags
     variables:
       - $CI_COMMIT_TAG =~ /^v-.*/
@@ -61,4 +58,6 @@ deploy to production:
     - bundle exec fastlane distribute
 
   only:
-    - ff
+    - main
+  variables:
+    - $CI_COMMIT_TAG =~ /^v-.*/
