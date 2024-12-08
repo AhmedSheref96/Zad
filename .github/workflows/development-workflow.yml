@@ -12,13 +12,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'tag' && github.ref_name == 'v-*' }}
 
     permissions:
       contents: write
 
     env:
       ORIGIN: ${{ secrets.ORIGIN }}
-      if: ${{ github.event.ref_type == 'tag' && github.ref_name == 'v-*' }}
 
     steps:
       - name: Checkout code
