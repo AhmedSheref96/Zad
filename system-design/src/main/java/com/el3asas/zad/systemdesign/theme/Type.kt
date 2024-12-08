@@ -4,12 +4,13 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
+import com.el3asas.zad.systemdesign.R
 
 val provider =
     GoogleFont.Provider(
         providerAuthority = "com.google.android.gms.fonts",
         providerPackage = "com.google.android.gms",
-        certificates = emptyList(),
+        certificates = R.array.com_google_android_gms_fonts_certs,
     )
 
 val bodyFontFamily =
@@ -26,6 +27,14 @@ val displayFontFamily =
             googleFont = GoogleFont("Cairo"),
             fontProvider = provider,
         ),
+    )
+
+val courseCardFontFamily =
+    FontFamily(
+        Font(
+            googleFont = GoogleFont("Aref Ruqaa"),
+            fontProvider = provider,
+        )
     )
 
 // Default Material 3 typography values

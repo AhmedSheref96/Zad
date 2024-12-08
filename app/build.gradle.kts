@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.firebaseCrashlytics)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -54,6 +57,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -86,5 +90,22 @@ dependencies {
     implementation(platform(libs.firebaseBom))
     implementation(libs.firebaseCrashlyticsKtx)
     implementation(libs.firebaseAnalyticsKtx)
+
+    implementation(libs.ksp.gradlePlugin)
+    implementation(libs.ksp.api)
+    implementation(libs.ksp)
+
+    implementation(libs.androidx.work.runtime)
+
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.androidx.hilt.worker)
+    ksp(libs.androidx.hilt.worker.compiler)
+
     implementation(project(":system-design"))
+    implementation(project(":feat-courses"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 }
