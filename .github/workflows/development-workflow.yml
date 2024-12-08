@@ -3,9 +3,11 @@ name: Development
 on:
   push:
     branches:
-      - /^feature.*$/
-      - /^feat.*$/
       - development
+      - feat*
+      - feature*
+    tags:
+      - 'v-*'
 
 jobs:
   build:
@@ -52,8 +54,8 @@ jobs:
       - name: set branch name
         run: echo "GIT_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
 
-      - name: Run Fastlane Lane
-        run: bundle exec fastlane tag_commit_if_needed
+#      - name: Run Fastlane Lane
+#        run: bundle exec fastlane tag_commit_if_needed
 
       - name: deploy to development
         run: bundle exec fastlane distribute

@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - master
+    tags:
+      - 'v-*'
 
 jobs:
   build:
@@ -51,8 +53,8 @@ jobs:
       - name: set branch name
         run: export GIT_BRANCH=$github.ref_name fastlane
 
-      - name: Run Fastlane Lane
-        run: bundle exec fastlane tag_commit_if_needed
+#      - name: Run Fastlane Lane
+#        run: bundle exec fastlane tag_commit_if_needed
 
       - name: deploy to production
         run: bundle exec fastlane distribute

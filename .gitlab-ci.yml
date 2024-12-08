@@ -20,23 +20,23 @@ default:
     - java -version
     - bundle install
 
-versioning-dev:
-  stage: development
-  script:
-    - bundle exec fastlane tag_commit_if_needed
-  only:
-    refs:
-      - /^feature.*$/
-      - /^feat.*$/
-      - development
-
-versioning-prod:
-  stage: production
-  script:
-    - bundle exec fastlane tag_commit_if_needed
-  only:
-    refs:
-      - main
+#versioning-dev:
+#  stage: development
+#  script:
+#    - bundle exec fastlane tag_commit_if_needed
+#  only:
+#    refs:
+#      - /^feature.*$/
+#      - /^feat.*$/
+#      - development
+#
+#versioning-prod:
+#  stage: production
+#  script:
+#    - bundle exec fastlane tag_commit_if_needed
+#  only:
+#    refs:
+#      - main
 
 deploy to development:
   stage: development
@@ -51,7 +51,7 @@ deploy to development:
       - development
       - tags
     variables:
-      - $CI_COMMIT_TAG
+      - $CI_COMMIT_TAG =~ /^v-.*/
 
 deploy to production:
   stage: development
