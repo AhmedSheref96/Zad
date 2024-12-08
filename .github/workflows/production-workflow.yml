@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'tag' && github.ref_name == 'v-*' }}
 
     permissions:
       contents: write
@@ -19,16 +20,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Check for Tag in Commit
-        run: |
-          TAG=$(git describe --tags --exact-match 2>/dev/null || echo "")
-          if [[ -n "$TAG" ]]; then
-            echo "The commit has a tag: $TAG"
-          else
-            echo "No tag found on the commit."
-            exit 1  # أو يمكن استكمال المهام الأخرى إذا لم يكن هناك تاج
-          fi
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
