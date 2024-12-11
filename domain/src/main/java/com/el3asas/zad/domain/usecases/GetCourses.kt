@@ -13,7 +13,7 @@ class GetCourses
     ) {
         suspend operator fun invoke() =
             withContext(Dispatchers.IO) {
-                delay(10000)
+                delay(2000)
                 repo.getCourses()
             }
     }

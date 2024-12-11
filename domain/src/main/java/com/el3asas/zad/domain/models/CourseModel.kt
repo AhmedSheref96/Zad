@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CourseModel(
+    val id: Int,
     val title: String,
     val description: String,
     val imageUrl: String,

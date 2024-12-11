@@ -1,13 +1,18 @@
 package com.el3asas.zad.courses.coursesHome
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import com.el3asas.zad.courses.coursesHome.CoursesAction.OnCourseCardClicked
 import com.el3asas.zad.courses.coursesHome.components.CourseCard
 
@@ -19,10 +24,11 @@ fun CoursesScreen(
 ) {
     when (state) {
         is CoursesState.LoadCourses -> {
-            LazyColumn {
-                itemsIndexed(state.courses) { _, item ->
+            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                itemsIndexed(state.courses, key = { _, item -> item.id }) { _, item ->
                     CourseCard(
-                        modifier = modifier,
+                        modifier = Modifier.padding(16.dp),
+                        courseModel = item,
                         onClick = { onAction(OnCourseCardClicked(item)) },
                     )
                 }
