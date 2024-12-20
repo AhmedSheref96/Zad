@@ -2,30 +2,28 @@ package com.el3asas.zad.courses.coursesHome
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
+import javax.inject.Inject
 
-class CoursesCoordinator(
-    val viewModel: CoursesViewModel,
-) {
-    val screenStateFlow = viewModel.stateFlow
+class
+CoursesCoordinator
+    @Inject
+    constructor(
+        val viewModel: CoursesViewModel,
+        val action: (CoursesAction) -> Unit = {},
+    ) {
+        val screenStateFlow = viewModel.stateFlow
 
-    fun handle(action: CoursesAction) {
-        when (action) {
-            is CoursesAction.OnCourseCardClicked -> {
-                viewModel.openCourseTeachers(action.courseModel)
-            }
-
-            is CoursesAction.OnAddCourseToFavorite -> {
-                viewModel.openCourseTeachers(action.courseModel)
-            }
-        }
+        fun handleActions(action: CoursesAction) = action(action)
     }
-}
 
 @Composable
-fun rememberCoursesCoordinator(viewModel: CoursesViewModel = hiltViewModel()): CoursesCoordinator =
+fun rememberCoursesCoordinator(
+    viewModel: CoursesViewModel,
+    action: (CoursesAction) -> Unit = {},
+): CoursesCoordinator =
     remember(viewModel) {
         CoursesCoordinator(
             viewModel = viewModel,
+            action = action,
         )
     }

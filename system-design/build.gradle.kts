@@ -67,7 +67,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     api(libs.kotlinx.serialization.json)
-    api(libs.kiwi.navigation.core)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)

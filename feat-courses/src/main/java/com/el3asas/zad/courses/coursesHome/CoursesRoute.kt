@@ -8,20 +8,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun CoursesRoute(
     modifier: Modifier = Modifier,
-    coordinator: CoursesCoordinator = rememberCoursesCoordinator(),
+    coordinator: CoursesCoordinator,
 ) {
-    // State observing and declarations
     val uiState by coordinator.screenStateFlow.collectAsStateWithLifecycle(CoursesState.Idle)
 
-    // UI Actions
-    val actionsHandler: (CoursesAction) -> Unit = { action ->
-        coordinator.handle(action)
-    }
-
-    // UI Rendering
     CoursesScreen(
         modifier = modifier,
         state = uiState,
-        onAction = actionsHandler,
+        onAction = coordinator::handleActions,
     )
 }

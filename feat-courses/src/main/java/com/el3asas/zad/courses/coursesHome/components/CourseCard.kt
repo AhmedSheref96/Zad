@@ -26,6 +26,7 @@ import com.el3asas.zad.systemdesign.theme.primaryContainerLight
 import kotlin.random.Random
 
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun CourseCard(
     modifier: Modifier = Modifier,

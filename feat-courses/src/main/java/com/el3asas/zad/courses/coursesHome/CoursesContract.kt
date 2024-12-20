@@ -2,11 +2,18 @@ package com.el3asas.zad.courses.coursesHome
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.el3asas.zad.domain.models.CourseModel
-import com.kiwi.navigationcompose.typed.Destination
 import kotlinx.serialization.Serializable
 
-@Serializable
-object CoursesDestination : Destination
+sealed class CoursesDestinations {
+    @Serializable
+    object List : CoursesDestinations()
+
+    @Serializable
+    object CourseTeachers : CoursesDestinations()
+
+    @Serializable
+    object CourseDetails : CoursesDestinations()
+}
 
 sealed class CoursesState {
     data object Idle : CoursesState()

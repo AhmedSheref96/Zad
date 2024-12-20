@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -103,6 +104,8 @@ dependencies {
 
     implementation(libs.androidx.hilt.worker)
     ksp(libs.androidx.hilt.worker.compiler)
+
+    implementation(libs.androidx.navigation.compose)
 
     implementation(project(":system-design"))
     implementation(project(":feat-courses"))

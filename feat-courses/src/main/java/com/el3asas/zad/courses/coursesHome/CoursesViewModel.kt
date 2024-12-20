@@ -2,8 +2,6 @@ package com.el3asas.zad.courses.coursesHome
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.el3asas.zad.courses.navigation.INavigationListener
-import com.el3asas.zad.domain.models.CourseModel
 import com.el3asas.zad.domain.usecases.GetCourses
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,15 +16,15 @@ class CoursesViewModel
     @Inject
     constructor(
         private val getCourses: GetCourses,
-        private val navigator: INavigationListener,
+//        private val navigator: INavigationListener,
     ) : ViewModel() {
         private val _stateFlow: MutableStateFlow<CoursesState> = MutableStateFlow(CoursesState.Idle)
 
         val stateFlow: StateFlow<CoursesState> = _stateFlow.asStateFlow()
 
-        fun openCourseTeachers(courseModel: CourseModel) {
-            navigator.onCourseCardClicked(courseModel)
-        }
+//        fun openCourseTeachers(courseModel: CourseModel) {
+//            navigator.onCourseCardClicked(courseModel)
+//        }
 
         init {
             viewModelScope.launch {

@@ -4,7 +4,6 @@ coilCompose = "3.0.4"
 hiltAndroid = "2.51.1"
 hiltWorker = "1.2.0"
 hiltNavigationCompose = "1.2.0"
-kiwi-navigation-core = "0.10.0"
 kotlin = "2.1.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -19,6 +18,7 @@ firebaseBom = "33.7.0"
 firebaseCrashlytics = "3.0.2"
 appcompat = "1.7.0"
 material = "1.12.0"
+navigationCompose = "2.8.5"
 timber = "5.0.1"
 uiTextGoogleFonts = "1.7.5"
 ksp = "2.1.0-1.0.29"
@@ -28,6 +28,7 @@ workRuntime = "2.10.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "workRuntime" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilCompose" }
@@ -36,7 +37,6 @@ androidx-hilt-worker = { module = "androidx.hilt:hilt-work", version.ref = "hilt
 androidx-hilt-worker-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWorker" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
-kiwi-navigation-core = { module = "com.kiwi.navigation-compose.typed:core", version.ref = "kiwi-navigation-core" }
 
 ksp = { module = "com.google.devtools.ksp:symbol-processing", version.ref = "ksp" }
 ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
@@ -72,5 +72,5 @@ firebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "f
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp" ,version.ref = "ksp" }
-hilt= {id="com.google.dagger.hilt.android",version.ref="hiltAndroid"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
