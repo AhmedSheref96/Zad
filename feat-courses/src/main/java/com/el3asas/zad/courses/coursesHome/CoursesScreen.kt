@@ -2,7 +2,6 @@ package com.el3asas.zad.courses.coursesHome
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
@@ -24,7 +23,10 @@ fun CoursesScreen(
 ) {
     when (state) {
         is CoursesState.LoadCourses -> {
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            LazyVerticalGrid(
+                modifier = modifier.fillMaxSize(),
+                columns = GridCells.Fixed(2),
+            ) {
                 itemsIndexed(state.courses, key = { _, item -> item.id }) { _, item ->
                     CourseCard(
                         modifier = Modifier.padding(16.dp),
