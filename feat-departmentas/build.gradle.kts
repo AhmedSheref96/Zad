@@ -1,43 +1,22 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.googleServices)
-    alias(libs.plugins.firebaseCrashlytics)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.el3sas.zad"
+    namespace = "com.el3asas.zad.departments"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.el3sas.zad"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 101
-        versionName = "v1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
-
-    signingConfigs {
-        create("release") {
-            val keystorePath = System.getenv("KEYSTORE_PATH") ?: "local/path/to/keystore.jks"
-            val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "local_keystore_password"
-            val keystoreAlias = System.getenv("KEY_ALIAS") ?: "local_key_alias"
-            val keystoreKEYPassword = System.getenv("KEY_PASSWORD") ?: "local_key_password"
-
-            storeFile = file(keystorePath)
-            storePassword = keystorePassword
-            keyAlias = keystoreAlias
-            keyPassword = keystoreKEYPassword
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -58,7 +37,6 @@ android {
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -71,7 +49,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -88,27 +65,20 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(platform(libs.firebaseBom))
-    implementation(libs.firebaseCrashlyticsKtx)
-    implementation(libs.firebaseAnalyticsKtx)
-
     implementation(libs.ksp.gradlePlugin)
     implementation(libs.ksp.api)
     implementation(libs.ksp)
-
-    implementation(libs.androidx.work.runtime)
 
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 
+    implementation(libs.androidx.navigation.compose)
+
     implementation(libs.androidx.hilt.worker)
     ksp(libs.androidx.hilt.worker.compiler)
 
-    implementation(libs.androidx.navigation.compose)
-
     implementation(project(":system-design"))
-    implementation(project(":feat-departmentas"))
-    implementation(project(":domain"))
-    implementation(project(":data"))
+    api(project(":domain"))
+    api(project(":data"))
 }

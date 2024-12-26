@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.googleServices)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.hilt)
 }
 
@@ -48,6 +50,9 @@ dependencies {
 
     implementation(libs.androidx.hilt.worker)
     ksp(libs.androidx.hilt.worker.compiler)
+
+    implementation(platform(libs.firebaseBom))
+    implementation(libs.firebase.firestore)
 
     implementation(project(":domain"))
 }

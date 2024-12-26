@@ -23,13 +23,17 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.el3asas.zad.courses.courseTeachers.CourseTeachersRoute
-import com.el3asas.zad.courses.coursesHome.CoursesAction
-import com.el3asas.zad.courses.coursesHome.CoursesDestinations
-import com.el3asas.zad.courses.coursesHome.CoursesRoute
-import com.el3asas.zad.courses.coursesHome.rememberCoursesCoordinator
+import com.el3asas.zad.departments.departmentTeachers.DepartmentTeachersRoute
+import com.el3asas.zad.departments.departmentsHome.DepartmentRoutes
+import com.el3asas.zad.departments.departmentsHome.DepartmentsAction
+import com.el3asas.zad.departments.departmentsHome.DepartmentsRoute
+import com.el3asas.zad.departments.departmentsHome.rememberDepartmentsCoordinator
+import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.systemdesign.theme.ZadTheme
+import com.el3sas.zad.utils.navType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.serialization.serializer
+import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -76,35 +80,35 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
 ) {
     NavHost(
-        startDestination = CoursesDestinations.List,
+        startDestination = DepartmentRoutes.DepartmentsList,
         navController = navController,
     ) {
-        composable<CoursesDestinations.List> {
-            CoursesRoute(
+        composable<DepartmentRoutes.DepartmentTeachers>(
+            typeMap =
+                mapOf(
+                    typeOf<DepartmentModel>() to navType<DepartmentModel>(serializer = DepartmentModel.serializer()),
+                ),
+        ) {
+            DepartmentTeachersRoute(
+                modifier = modifier,
+            )
+        }
+
+        composable<DepartmentRoutes.DepartmentsList> {
+            DepartmentsRoute(
                 modifier = modifier,
                 coordinator =
-                    rememberCoursesCoordinator(
+                    rememberDepartmentsCoordinator(
                         viewModel = hiltViewModel(),
-                        action = { action ->
-                            when (action) {
-                                is CoursesAction.OnCourseCardClicked -> {
-                                    navController.navigate(CoursesDestinations.CourseTeachers)
-                                }
-
-                                is CoursesAction.OnAddCourseToFavorite -> {
-                                    // TODO: favorite course
+                        action = {
+                            when (it) {
+                                is DepartmentsAction.OnDepartmentCardClicked -> {
+                                    navController.navigate(DepartmentRoutes.DepartmentTeachers(it.departmentModel))
                                 }
                             }
                         },
                     ),
             )
-        }
-
-        composable<CoursesDestinations.CourseTeachers> {
-            CourseTeachersRoute(modifier = modifier)
-        }
-
-        composable<CoursesDestinations.CourseDetails> {
         }
     }
 }

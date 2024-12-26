@@ -77,8 +77,6 @@ dependencies {
     api(libs.coil.network.okhttp)
     api(libs.coil.compose)
 
-    api(libs.timber)
-
     implementation(libs.ksp.gradlePlugin)
     implementation(libs.ksp.api)
     implementation(libs.ksp)

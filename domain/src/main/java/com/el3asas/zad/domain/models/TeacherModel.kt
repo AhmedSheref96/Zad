@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TeacherModel(
-    val id: String,
-    val name: String,
-    val imageUrl: String,
+    val id: String = "",
+    val name: String = "",
+    val imageUrl: String = "",
 )
