@@ -44,6 +44,6 @@ class DepartmentsDataSource
                 description = result.getString("description") ?: "",
                 imageUrl = result.getString("imageUrl") ?: "",
             ).apply {
-                Timber.d("mapResultToCourses: $this")
+                Timber.d("mapResultToDepartment: $this")
             }
     }

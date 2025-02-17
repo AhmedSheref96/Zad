@@ -30,7 +30,7 @@ fun CourseCard(
     BoxWithConstraints {
         val maxSize = maxWidth
         Card(
-            modifier = modifier.then(Modifier.size(maxSize).padding(16.dp)),
+            modifier = modifier.then(Modifier.size(maxSize)),
             onClick = onClick,
             colors =
                 CardDefaults.cardColors().copy(
