@@ -1,4 +1,4 @@
-package com.el3asas.zad.departments.departmentTeachers
+package com.el3sas.zad.ui.departmentTeachers
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

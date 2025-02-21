@@ -1,4 +1,4 @@
-package com.el3asas.zad.departments.departmentsHome
+package com.el3sas.zad.ui.departmentsHome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,10 +13,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.el3asas.zad.departments.departmentsHome.DepartmentsAction.OnDepartmentCardClicked
-import com.el3asas.zad.departments.departmentsHome.components.CourseCard
 import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.systemdesign.R
+import com.el3sas.zad.components.DepartmentCard
+import com.el3sas.zad.ui.departmentsHome.DepartmentsAction.OnDepartmentCardClicked
 
 @Composable
 fun CoursesScreen(
@@ -31,10 +31,10 @@ fun CoursesScreen(
                 horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.content_padding_2)),
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.content_padding_2)),
                 columns = GridCells.Adaptive(minSize = 120.dp),
-                contentPadding = PaddingValues(dimensionResource(R.dimen.content_padding_2))
+                contentPadding = PaddingValues(dimensionResource(R.dimen.content_padding_2)),
             ) {
                 itemsIndexed(state.courses, key = { _, item -> item.id }) { _, item ->
-                    CourseCard(
+                    DepartmentCard(
                         modifier = Modifier,
                         departmentModel = item,
                         onClick = { onAction(OnDepartmentCardClicked(item)) },

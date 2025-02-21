@@ -95,7 +95,7 @@ dependencies {
     implementation(libs.ksp.gradlePlugin)
     implementation(libs.ksp.api)
     implementation(libs.ksp)
-
+    implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.work.runtime)
 
     implementation(libs.hilt.android)
@@ -108,7 +108,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(project(":system-design"))
-    implementation(project(":feat-departmentas"))
     implementation(project(":domain"))
     implementation(project(":data"))
 }

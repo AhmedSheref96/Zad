@@ -1,6 +1,7 @@
 [versions]
 agp = "8.7.3"
 coilCompose = "3.0.4"
+constraintlayoutCompose = "1.1.0"
 hiltAndroid = "2.51.1"
 hiltWorker = "1.2.0"
 hiltNavigationCompose = "1.2.0"
@@ -11,21 +12,22 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinxSerializationJson = "1.7.3"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.12.01"
+activityCompose = "1.10.0"
+composeBom = "2025.02.00"
 googleServices = "4.4.2"
-firebaseBom = "33.7.0"
-firebaseCrashlytics = "3.0.2"
+firebaseBom = "33.9.0"
+firebaseCrashlytics = "3.0.3"
 appcompat = "1.7.0"
 material = "1.12.0"
-navigationCompose = "2.8.5"
+navigationCompose = "2.8.7"
 timber = "5.0.1"
-uiTextGoogleFonts = "1.7.6"
+uiTextGoogleFonts = "1.7.8"
 ksp = "2.1.0-1.0.29"
 workRuntime = "2.10.0"
 
 
 [libraries]
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }

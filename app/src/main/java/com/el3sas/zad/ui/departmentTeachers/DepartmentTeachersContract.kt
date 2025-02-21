@@ -1,4 +1,4 @@
-package com.el3asas.zad.departments.departmentTeachers
+package com.el3sas.zad.ui.departmentTeachers
 
 import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.domain.models.TeacherModel
