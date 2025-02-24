@@ -9,7 +9,7 @@ fun CoursesHomeScreen(
     state: CoursesHomeState,
     onAction: (CoursesHomeAction) -> Unit,
 ) {
-    // TODO UI Rendering
+
 }
 
 @Composable

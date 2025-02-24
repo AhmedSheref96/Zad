@@ -7,7 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 fun CoursesHomeRoute(coordinator: CoursesHomeCoordinator = rememberCoursesHomeCoordinator()) {
     // State observing and declarations
-    val uiState by coordinator.screenStateFlow.collectAsStateWithLifecycle(CoursesHomeState())
+    val uiState by coordinator.screenStateFlow.collectAsStateWithLifecycle(CoursesHomeState.Idle)
 
     // UI Actions
     val actionsHandler: (CoursesHomeAction) -> Unit = { action ->
