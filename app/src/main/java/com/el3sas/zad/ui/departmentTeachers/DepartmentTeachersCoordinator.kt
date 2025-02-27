@@ -14,9 +14,6 @@ class DepartmentTeachersCoordinator
 
         fun handle(action: DepartmentTeachersAction) {
             when (action) {
-                DepartmentTeachersAction.OnSelectTeacher -> {
-                }
-
                 is DepartmentTeachersAction.LoadTeachersForDepartment -> {
                     viewModel.loadTeachers(action.model.id)
                 }

@@ -14,10 +14,7 @@ class CoursesHomeCoordinator(
     val screenStateFlow = viewModel.stateFlow
 
     fun handle(action: CoursesHomeAction) {
-        when (action) {
-            CoursesHomeAction.OnClick -> { // Handle action
-            }
-        }
+        viewModel.handleAction(action)
     }
 }
 

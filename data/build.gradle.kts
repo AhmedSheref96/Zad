@@ -53,6 +53,7 @@ dependencies {
 
     implementation(platform(libs.firebaseBom))
     implementation(libs.firebase.firestore)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     implementation(project(":domain"))
 }

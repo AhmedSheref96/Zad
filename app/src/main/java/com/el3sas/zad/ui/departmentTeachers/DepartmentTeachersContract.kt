@@ -18,8 +18,12 @@ sealed class DepartmentTeachersState {
 }
 
 sealed interface DepartmentTeachersAction {
-    data object OnSelectTeacher : DepartmentTeachersAction
+    data class OnSelectTeacher(
+        val teacherModel: TeacherModel,
+    ) : DepartmentTeachersAction
+
     data object OnBackClicked : DepartmentTeachersAction
+
     data class LoadTeachersForDepartment(
         val model: DepartmentModel,
     ) : DepartmentTeachersAction

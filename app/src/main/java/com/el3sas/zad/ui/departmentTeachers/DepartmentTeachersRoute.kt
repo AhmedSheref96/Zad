@@ -9,12 +9,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun DepartmentTeachersRoute(
     modifier: Modifier,
     coordinator: DepartmentTeachersCoordinator = rememberDepartmentTeachersCoordinator(),
+    onAction: (DepartmentTeachersAction) -> Unit,
 ) {
     val uiState by coordinator.screenStateFlow.collectAsStateWithLifecycle(DepartmentTeachersState.Idle)
 
     DepartmentTeachersScreen(
         modifier = modifier,
         state = uiState,
-        onAction = coordinator::handle,
+        onAction = {
+            when (it) {
+                is DepartmentTeachersAction.LoadTeachersForDepartment -> coordinator::handle
+                DepartmentTeachersAction.OnBackClicked -> onAction(it)
+                is DepartmentTeachersAction.OnSelectTeacher -> onAction(it)
+            }
+        },
     )
 }

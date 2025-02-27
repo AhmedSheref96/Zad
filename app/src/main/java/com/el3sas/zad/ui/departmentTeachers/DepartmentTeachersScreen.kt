@@ -71,7 +71,7 @@ fun DepartmentTeachersScreen(
                     itemsIndexed(state.teachers) { index, item ->
                         TeacherCard(
                             teacher = item,
-                            onClick = { onAction(DepartmentTeachersAction.OnSelectTeacher) },
+                            onClick = { onAction(DepartmentTeachersAction.OnSelectTeacher(teacherModel = item)) },
                         )
                     }
                 }

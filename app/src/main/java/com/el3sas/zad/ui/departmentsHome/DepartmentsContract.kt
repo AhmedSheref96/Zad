@@ -3,14 +3,19 @@ package com.el3sas.zad.ui.departmentsHome
 import com.el3asas.zad.domain.models.DepartmentModel
 import kotlinx.serialization.Serializable
 
-sealed interface DepartmentRoutes {
+sealed interface Destinations {
     @Serializable
-    data object DepartmentsList : DepartmentRoutes
+    data object DepartmentsList : Destinations
 
     @Serializable
     data class DepartmentTeachers(
         val departmentModel: DepartmentModel,
-    ) : DepartmentRoutes
+    ) : Destinations
+
+    @Serializable
+    data class Courses(
+        val teacherId: String,
+    ) : Destinations
 }
 
 sealed class DepartmentsState {
