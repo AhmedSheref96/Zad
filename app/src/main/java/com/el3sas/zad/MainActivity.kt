@@ -15,14 +15,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.el3asas.zad.domain.models.CourseModel
 import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.systemdesign.theme.ZadTheme
+import com.el3sas.zad.ui.Destinations
 import com.el3sas.zad.ui.courses.courseshome.CoursesHomeRoute
 import com.el3sas.zad.ui.departmentTeachers.DepartmentTeachersAction
 import com.el3sas.zad.ui.departmentTeachers.DepartmentTeachersRoute
 import com.el3sas.zad.ui.departmentsHome.DepartmentsAction
 import com.el3sas.zad.ui.departmentsHome.DepartmentsRoute
-import com.el3sas.zad.ui.departmentsHome.Destinations
 import com.el3sas.zad.ui.departmentsHome.rememberDepartmentsCoordinator
 import com.el3sas.zad.utils.navType
 import dagger.hilt.android.AndroidEntryPoint
