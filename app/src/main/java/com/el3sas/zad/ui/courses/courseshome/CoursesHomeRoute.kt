@@ -10,13 +10,17 @@ fun CoursesHomeRoute(
     modifier: Modifier = Modifier,
     teacherId: String,
     coordinator: CoursesHomeCoordinator = rememberCoursesHomeCoordinator(),
+    onAction: (CoursesHomeAction) -> Unit,
 ) {
     // State observing and declarations
     val uiState by coordinator.screenStateFlow.collectAsStateWithLifecycle(CoursesHomeState.Idle)
 
     // UI Actions
     val actionsHandler: (CoursesHomeAction) -> Unit = { action ->
-        coordinator.handle(action)
+        when (action) {
+            is CoursesHomeAction.GetCourses -> coordinator.handle(action)
+            is CoursesHomeAction.OnCourseClicked -> onAction(action)
+        }
     }
 
     coordinator.handle(CoursesHomeAction.GetCourses(teacherId = teacherId))

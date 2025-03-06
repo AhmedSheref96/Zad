@@ -167,9 +167,9 @@ fun CourseCardPreview() {
             description = "Course Description",
             imageUrl = "https://via.placeholder.com/150",
             teachers = listOf(teacher),
-            department = listOf(department),
             properties = properties,
             id = Random.nextAlphanumericString(5),
+            courseYoutubeUrl = ""
         )
     CourseCard(course = course)
 }

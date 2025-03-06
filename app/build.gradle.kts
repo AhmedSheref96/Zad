@@ -106,6 +106,7 @@ dependencies {
     ksp(libs.androidx.hilt.worker.compiler)
 
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidyoutubeplayer.core)
 
     implementation(project(":system-design"))
     implementation(project(":domain"))

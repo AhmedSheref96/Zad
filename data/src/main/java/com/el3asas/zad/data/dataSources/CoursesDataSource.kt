@@ -105,8 +105,9 @@ class CoursesDataSource
                 description = result.getString("description") ?: "",
                 imageUrl = result.getString("imageUrl") ?: "",
                 teachers = teachers, // Assuming you handle teachers separately
-                department = emptyList(), // Assuming you handle department separately
+//                department = emptyList(), // Assuming you handle department separately
                 properties = properties,
+                courseYoutubeUrl = result.getString("courseYoutubeUrl") ?: "",
             ).apply {
                 Timber.d("mapResultToCourse: $this")
             }
