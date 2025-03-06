@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+/fastlane/google-service-secrets.json

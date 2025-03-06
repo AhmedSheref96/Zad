@@ -3,6 +3,20 @@ default_platform(:android)
 require 'dotenv'
 
 platform :android do
+
+  lane :setup_google_secrets do
+    require 'base64'
+
+    json_data = ENV['GOOGLE_SERVICE_SECRETS']
+    if json_data.nil? || json_data.empty?
+      UI.user_error!("Missing GOOGLE_SERVICE_SECRETS environment variable")
+    end
+
+    File.open("fastlane/google-service-secrets.json", "w") do |file|
+      file.write(json_data)
+    end
+  end
+
   desc "Runs all the tests"
   lane :test do
     gradle(task: "test")
