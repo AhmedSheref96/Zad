@@ -8,7 +8,6 @@ platform :android do
     require 'base64'
 
     json_data = ENV['GOOGLE_SERVICE_SECRETS']
-
     if json_data.nil? || json_data.empty?
       UI.user_error!("Missing GOOGLE_SERVICE_SECRETS environment variable")
     end
