@@ -6,12 +6,6 @@ on:
       - development
       - feat*
       - feature*
-    tags:
-      - 'v-*'
-  workflow_run:
-    workflows: ["Development"]
-    types:
-      - completed
 
 jobs:
   build:
