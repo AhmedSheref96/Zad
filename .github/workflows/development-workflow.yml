@@ -8,10 +8,10 @@ on:
       - feature*
     tags:
       - 'v-*'
-workflow_run:
-  workflows: ["Development"]
-  types:
-    - completed
+  workflow_run:
+    workflows: ["Development"]
+    types:
+      - completed
 
 jobs:
   build:
