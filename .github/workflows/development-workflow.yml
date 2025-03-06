@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check if Tag starts with "v-"
-        if: ${{ github.event.ref_type == 'tag' && startsWith(github.ref_name, 'v-') }}
+        if: ${{ (github.event.ref_type == 'tag' && startsWith(github.ref_name, 'v-'))||startsWith(github.ref_name, 'testCi') }}
         run: echo "Deploying version = ${{ github.ref_name }}"
 
       - name: Set up Ruby
