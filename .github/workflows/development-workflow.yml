@@ -3,13 +3,16 @@ name: Development
 on:
   push:
     branches:
-      - /^feature.*$/
-      - /^feat.*$/
       - development
+      - feat*
+      - feature*
+    tags:
+      - 'v-*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: ${{ github.event.ref_type == 'tag' && github.ref_name == 'v-*' }}
 
     permissions:
       contents: write
@@ -18,6 +21,11 @@ jobs:
       ORIGIN: ${{ secrets.ORIGIN }}
 
     steps:
+      - name: Decode Google Service Secrets
+        run: echo "$GOOGLE_SERVICE_SECRETS" > fastlane/google-service-secrets.json
+        env:
+          GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -52,8 +60,8 @@ jobs:
       - name: set branch name
         run: echo "GIT_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
 
-      - name: Run Fastlane Lane
-        run: bundle exec fastlane tag_commit_if_needed
+#      - name: Run Fastlane Lane
+#        run: bundle exec fastlane tag_commit_if_needed
 
       - name: deploy to development
         run: bundle exec fastlane distribute
