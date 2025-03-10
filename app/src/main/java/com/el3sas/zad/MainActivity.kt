@@ -1,13 +1,16 @@
 package com.el3sas.zad
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.collection.forEach
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -55,6 +58,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun AppNavHost(
     navController: NavHostController,
@@ -75,19 +79,22 @@ fun AppNavHost(
         composable<Destinations.YoutubePlaylist>(
             typeMap =
                 mapOf(
-                    typeOf<CourseModel>() to navType<CourseModel>(serializer = CourseModel.serializer()),
+                    typeOf<CourseModel>() to navType<CourseModel>(),
                 ),
-        ) {
-            val args = it.toRoute<Destinations.YoutubePlaylist>()
-            CourseYoutubePlaylistViewRoute(
-                courseModel = args.courseModel,
-            )
+        ) { backStackEntry ->
+//            val courseModel =
+//                Gson().fromJson(
+//                    backStackEntry.toRoute<Destinations.YoutubePlaylist>().courseModel,
+//                    CourseModel::class.java,
+//                )
+            val courseModel = backStackEntry.toRoute<Destinations.YoutubePlaylist>().courseModel
+            CourseYoutubePlaylistViewRoute(modifier = modifier, courseModel = courseModel)
         }
 
         composable<Destinations.DepartmentTeachers>(
             typeMap =
                 mapOf(
-                    typeOf<DepartmentModel>() to navType<DepartmentModel>(serializer = DepartmentModel.serializer()),
+                    typeOf<DepartmentModel>() to navType<DepartmentModel>(),
                 ),
         ) {
             DepartmentTeachersRoute(
@@ -129,12 +136,22 @@ fun AppNavHost(
                 teacherId = args.teacherId,
             ) { action ->
                 when (action) {
-                    is CoursesHomeAction.OnCourseClicked ->
-                        navController.navigate(Destinations.YoutubePlaylist(action.courseModel))
+                    is CoursesHomeAction.OnCourseClicked -> {
+//                        val courseModel = Gson().toJson(action.courseModel)
+                        navController.navigate(
+                            Destinations.YoutubePlaylist(action.courseModel),
+                        )
+                    }
 
                     else -> Unit
                 }
             }
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        navController.graph.nodes.forEach { key, value ->
+            Timber.d("navigation details $key  $value")
         }
     }
 }

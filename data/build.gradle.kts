@@ -54,6 +54,18 @@ dependencies {
     implementation(platform(libs.firebaseBom))
     implementation(libs.firebase.firestore)
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation(platform(libs.okhttp.bom))
+
+    implementation(libs.okhttp)
+    implementation(libs.logginginterceptor) {
+        exclude(group = "org.json", module = "json")
+    }
+
+    implementation(libs.androidx.paging.runtime.ktx)
 
     implementation(project(":domain"))
 }

@@ -2,12 +2,15 @@ package com.el3sas.zad.ui.courses.courseyoutubeplaylistview
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.el3asas.zad.domain.models.CourseModel
+import com.el3asas.zad.domain.models.PlaylistItem
 
 /**
  * UI State that represents CourseYoutubePlaylistViewScreen
  **/
-class CourseYoutubePlaylistViewState(
-    val courseModel: CourseModel?,
+data class CourseYoutubePlaylistViewState(
+    val courseModel: CourseModel,
+    val playlistItems: List<PlaylistItem> = emptyList(),
+    val isLoadingVideo: Boolean = true,
 )
 
 /**
