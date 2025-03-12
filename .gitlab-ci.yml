@@ -1,35 +1,48 @@
-image: cirrusci/android-sdk:33
-
 stages:
+  - build
   - deploy
 
 variables:
-  SECURE_FILES_DIR: "${CI_PROJECT_DIR}/.secure-files"  # المسار الصحيح للملفات الآمنة
+  JAVA_VERSION: "17"
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
 
-deploy_to_firebase:
+# Use modern Android SDK image
+image: cirrusci/android-sdk:33
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq ruby-full unzip
+  - gem install bundler
+  - bundle install
+
+deploy_to_development:
   stage: deploy
-  before_script:
-    - mkdir -p "${SECURE_FILES_DIR}"
   script:
-    # --------------------- الخطوة 1: نسخ الملف الآمن ---------------------
-    - echo "CI_SECURE_FILES path: ${CI_SECURE_FILES}"
-    - ls -la "${CI_SECURE_FILES}"  # التحقق من وجود الملف
+    # CORRECTED: Secure files path (remove .secure-files from path)
     - cp "${CI_SECURE_FILES}/google-service-secrets.json" ./
-    
-    # --------------------- الخطوة 2: التحقق من الملف ---------------------
-    - ls -la  # التأكد من ظهور الملف في المسار الجذر
-    - file google-service-secrets.json  # التحقق من نوع الملف
-    - jq empty google-service-secrets.json || exit 1  # التحقق من صحة JSON
-    
-    # --------------------- الخطوة 3: إصلاح الصلاحيات ---------------------
-    - chmod 644 google-service-secrets.json  # منح صلاحيات القراءة
-    
-    # --------------------- الخطوة 4: تشغيل Fastlane ---------------------
-    - bundle install
-    - bundle exec fastlane distribute
 
+    # Set proper permissions
+    - chmod 644 google-service-secrets.json
+
+    # Verify file existence
+    - ls -la
+
+    # Execute deployment
+    - bundle exec fastlane distribute_development
+  only:
+    - tags
+    - development
+    - /^v-dev-.*/
+
+deploy_to_production:
+  stage: deploy
+  script:
+    - cp "${CI_SECURE_FILES}/google-service-secrets.json" ./
+    - chmod 644 google-service-secrets.json
+    - bundle exec fastlane distribute_production
   only:
     - main
 
-  after_script:
-    - rm -f google-service-secrets.json  # حذف الملف بعد الانتهاء
+after_script:
+  # Cleanup secrets file
+  - rm -f google-service-secrets.json
