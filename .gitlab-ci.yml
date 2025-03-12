@@ -1,39 +1,35 @@
+image: cirrusci/android-sdk:33
+
 stages:
-  - build
   - deploy
 
 variables:
-  JAVA_VERSION: "17"
-  LC_ALL: "en_US.UTF-8"
-  LANG: "en_US.UTF-8"
+  SECURE_FILES_DIR: "${CI_PROJECT_DIR}/.secure-files"  # المسار الصحيح للملفات الآمنة
 
-image: cirrusci/android-sdk:33
-
-before_script:
-  - apt-get update -qq && apt-get install -y -qq ruby-full unzip
-  - gem install bundler
-  - bundle install
-
-deploy_to_development:
+deploy_to_firebase:
   stage: deploy
+  before_script:
+    - mkdir -p "${SECURE_FILES_DIR}"
   script:
-    - cp $CI_SECURE_FILES/.secure-files/google-service-secrets.json ./
-    - chmod 644 google-service-secrets.json
-    - ls -la
-    - bundle exec fastlane distribute_development
-  only:
-    - tags
-    - development
-    - /^v-dev-.*/
+    # --------------------- الخطوة 1: نسخ الملف الآمن ---------------------
+    - echo "CI_SECURE_FILES path: ${CI_SECURE_FILES}"
+    - ls -la "${CI_SECURE_FILES}"  # التحقق من وجود الملف
+    - cp "${CI_SECURE_FILES}/google-service-secrets.json" ./
+    
+    # --------------------- الخطوة 2: التحقق من الملف ---------------------
+    - ls -la  # التأكد من ظهور الملف في المسار الجذر
+    - file google-service-secrets.json  # التحقق من نوع الملف
+    - jq empty google-service-secrets.json || exit 1  # التحقق من صحة JSON
+    
+    # --------------------- الخطوة 3: إصلاح الصلاحيات ---------------------
+    - chmod 644 google-service-secrets.json  # منح صلاحيات القراءة
+    
+    # --------------------- الخطوة 4: تشغيل Fastlane ---------------------
+    - bundle install
+    - bundle exec fastlane distribute
 
-deploy_to_production:
-  stage: deploy
-  script:
-    - cp $CI_SECURE_FILES/.secure-files/google-service-secrets.json ./
-    - chmod 644 google-service-secrets.json
-    - bundle exec fastlane distribute_production
   only:
     - main
 
-after_script:
-  - rm -f google-service-secrets.json
+  after_script:
+    - rm -f google-service-secrets.json  # حذف الملف بعد الانتهاء
