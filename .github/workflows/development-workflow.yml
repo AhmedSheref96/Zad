@@ -25,6 +25,12 @@ jobs:
         env:
           GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
 
+      - name: Validate file creation
+        run: |
+          ls -la ./fastlane
+          file ./fastlane/google-service-secrets.json
+          cat ./fastlane/google-service-secrets.json
+
       - name: Checkout code
         uses: actions/checkout@v4
 
