@@ -23,6 +23,7 @@ deploy_to_development:
     - bundle exec fastlane distribute_development
   only:
     - tags
+    - development
     - /^v-dev-.*/
 
 deploy_to_production:
