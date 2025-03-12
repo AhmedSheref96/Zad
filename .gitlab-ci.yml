@@ -17,7 +17,7 @@ before_script:
 deploy_to_development:
   stage: deploy
   script:
-    - cp $CI_SECURE_FILES/google-service-secrets.json ./
+    - cp $CI_SECURE_FILES/.secure-files/google-service-secrets.json ./
     - chmod 644 google-service-secrets.json
     - ls -la
     - bundle exec fastlane distribute_development
@@ -29,7 +29,7 @@ deploy_to_development:
 deploy_to_production:
   stage: deploy
   script:
-    - cp $CI_SECURE_FILES/google-service-secrets.json ./
+    - cp $CI_SECURE_FILES/.secure-files/google-service-secrets.json ./
     - chmod 644 google-service-secrets.json
     - bundle exec fastlane distribute_production
   only:
