@@ -13,7 +13,7 @@ platform :android do
       UI.user_error!("Missing GOOGLE_SERVICE_SECRETS environment variable")
     end
 
-    File.open("google-service-secrets.json", "w") do |file|
+    File.open("fastlane/google-service-secrets.json", "w") do |file|
       file.write(json_data)
     end
   end
@@ -148,7 +148,7 @@ platform :android do
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
       release_notes: release_notes,
       groups: "operations-team,qa-team",
-      debug: true
+      debug: false
     )
   end
 
