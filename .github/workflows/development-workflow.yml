@@ -28,6 +28,10 @@ jobs:
         env:
           GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
 
+      - name: Debug Path
+        run:
+          echo "Current path: $(pwd)"
+
       - name: Validate file creation
         run: |
           ls -la ./fastlane
