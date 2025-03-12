@@ -31,6 +31,9 @@ jobs:
           file ./fastlane/google-service-secrets.json
           cat ./fastlane/google-service-secrets.json
 
+      - name: Fix permissions
+        run: chmod 644 ./fastlane/google-service-secrets.json
+
       - name: Checkout code
         uses: actions/checkout@v4
 
