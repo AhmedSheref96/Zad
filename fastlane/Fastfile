@@ -13,7 +13,7 @@ platform :android do
       UI.user_error!("Missing GOOGLE_SERVICE_SECRETS environment variable")
     end
 
-    File.open("fastlane/google-service-secrets.json", "w") do |file|
+    File.open("google-service-secrets.json", "w") do |file|
       file.write(json_data)
     end
   end

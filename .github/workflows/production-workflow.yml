@@ -20,12 +20,12 @@ jobs:
       - name: Create Google Service Secrets file safely
         run: |
           mkdir -p fastlane
-          printf "%s" "$GOOGLE_SERVICE_SECRETS" > fastlane/google-service-secrets.json
+          printf "%s" "$GOOGLE_SERVICE_SECRETS" > google-service-secrets.json
         env:
           GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
 
       - name: Decode Google Service Secrets
-        run: echo "$GOOGLE_SERVICE_SECRETS" > fastlane/google-service-secrets.json
+        run: echo "$GOOGLE_SERVICE_SECRETS" > google-service-secrets.json
         env:
           GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
 
