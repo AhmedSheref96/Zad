@@ -26,13 +26,5 @@ fun CourseYoutubePlaylistViewRoute(
         state = uiState,
         onAction = actionsHandler,
         playlistDataPager = coordinator.viewModel.playlistDataPager,
-        onVideoReadToPlay = {
-//            val state = coordinator.viewModel.stateFlow.value
-//            coordinator.viewModel.updateState(
-//                state.copy(
-//                    isLoadingVideo = false,
-//                ),
-//            )
-        },
     )
 }

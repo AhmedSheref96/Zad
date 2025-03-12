@@ -99,7 +99,7 @@ fun CourseCard(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .gradientBackground(),
+                            .circleGradientBackground(),
                 )
             }
         }
@@ -169,7 +169,7 @@ fun CourseCardPreview() {
             teachers = listOf(teacher),
             properties = properties,
             id = Random.nextAlphanumericString(5),
-            courseYoutubeUrl = ""
+            courseYoutubeUrl = "",
         )
     CourseCard(course = course)
 }

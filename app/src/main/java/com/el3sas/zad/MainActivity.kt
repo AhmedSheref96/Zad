@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.collection.forEach
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +46,8 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     modifier =
                         Modifier
-                            .fillMaxSize(),
+                            .fillMaxSize()
+                            .systemBarsPadding(),
                 ) { innerPadding ->
                     val navController = rememberNavController()
                     AppNavHost(
@@ -64,14 +66,6 @@ fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
 ) {
-    navController.addOnDestinationChangedListener { controller, destination, arguments ->
-        Timber.d(
-            "destination changed ${destination.route}\n" +
-                "destination $destination\n" +
-                "arguments $arguments\n",
-        )
-    }
-
     NavHost(
         startDestination = Destinations.DepartmentsList,
         navController = navController,
