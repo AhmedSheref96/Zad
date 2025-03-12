@@ -27,14 +27,6 @@ jobs:
         env:
           GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
 
-      - name: Debug Path
-        run:
-          echo "Current path = $(pwd)"
-
-      - name: Validate file creation
-        run: |
-          file google-service-secrets.json
-          cat google-service-secrets.json
 
       - name: Check if Tag starts with "v-"
         if: ${{ (github.event.ref_type == 'tag' && startsWith(github.ref_name, 'v-'))||startsWith(github.ref_name, 'testCi') }}
@@ -76,3 +68,7 @@ jobs:
 
       - name: deploy to development
         run: bundle exec fastlane distribute
+
+      - name: Cleanup secrets
+        run: rm -f ./fastlane/google-service-secrets.json
+        if: always()
