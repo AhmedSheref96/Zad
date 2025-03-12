@@ -18,6 +18,9 @@ jobs:
       ORIGIN: ${{ secrets.ORIGIN }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Create Google Service Secrets file
         run: |
           mkdir -p ./fastlane
@@ -33,9 +36,6 @@ jobs:
 
       - name: Fix permissions
         run: chmod 644 ./fastlane/google-service-secrets.json
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Check if Tag starts with "v-"
         if: ${{ (github.event.ref_type == 'tag' && startsWith(github.ref_name, 'v-'))||startsWith(github.ref_name, 'testCi') }}
