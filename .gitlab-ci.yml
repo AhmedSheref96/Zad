@@ -23,7 +23,7 @@ deploy-to-development:
   script:
     - echo "ENCODED_GOOGLE_SERVICES= ${ENCODED_GOOGLE_SERVICES:0:10}..."
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > ENV['FIREBASE_CONDITIONALS_JSON']
-    - echo "FIREBASE_CONDITIONALS_JSON = =ENV['FIREBASE_CONDITIONALS_JSON']
+    - echo "FIREBASE_CONDITIONALS_JSON =" ENV['FIREBASE_CONDITIONALS_JSON']
     - chmod 644 ENV['FIREBASE_CONDITIONALS_JSON']
     - bundle exec fastlane distribute
   rules:
