@@ -4,14 +4,16 @@ stages:
 
 variables:
   ENCODED_GOOGLE_SERVICES: ""
-  JAVA_VERSION: "11"
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
 
 image: cirrusci/android-sdk:33
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq ruby-full unzip
+  - apt-get update -qq
+  - apt-get install -y -qq ruby-full unzip openjdk-17-jdk
+  - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+  - java -version
   - gem install bundler
   - bundle install
   - chmod +x ./gradlew
@@ -20,11 +22,9 @@ before_script:
 deploy-to-development:
   stage: development
   script:
-    - echo "Decoding google-services.json..."
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > google-services.json
     - chmod 644 google-services.json
-    - ls -la
-    - bundle exec fastlane distribute
+    - bundle exec fastlane distribute_development
   rules:
     - if: '$CI_COMMIT_REF_NAME == "development"'
     - if: '$CI_COMMIT_TAG =~ /^v-dev-/'
@@ -32,10 +32,9 @@ deploy-to-development:
 deploy-to-production:
   stage: production
   script:
-    - echo "فك تشفير ملف google-services.json..."
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > google-services.json
     - chmod 644 google-services.json
-    - bundle exec fastlane distribute
+    - bundle exec fastlane distribute_production
   rules:
     - if: '$CI_COMMIT_REF_NAME == "main" && $CI_COMMIT_TAG =~ /^v-prod-/'
 
