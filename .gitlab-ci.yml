@@ -45,9 +45,10 @@ deploy to development:
     - bundle install
     - bundle exec fastlane distribute
   only:
-    - development
-  variables:
-    - $CI_COMMIT_TAG =~ /^v-.*/
+      refs:
+        - development
+      variables:
+        - $CI_COMMIT_TAG =~ /^v-.*/
 
 deploy to production:
   stage: production
