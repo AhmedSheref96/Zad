@@ -4,30 +4,26 @@ stages:
 
 variables:
   JAVA_VERSION: "17"
-  LC_ALL: "en_US.UTF-8"
-  LANG: "en_US.UTF-8"
+  SECRETS_FILE: "google-service-secrets.json"
 
-# Use modern Android SDK image
 image: cirrusci/android-sdk:33
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq ruby-full unzip
+  - apt-get update -qq && apt-get install -y -qq ruby-full unzip jq
   - gem install bundler
   - bundle install
 
 deploy_to_development:
   stage: deploy
   script:
-    # CORRECTED: Secure files path (remove .secure-files from path)
-    - cp "${CI_SECURE_FILES}/google-service-secrets.json" ./
+    - echo "$GOOGLE_SERVICE_SECRETS" | base64 -d > "${SECRETS_FILE}"
 
-    # Set proper permissions
-    - chmod 644 google-service-secrets.json
-
-    # Verify file existence
     - ls -la
+    - file "${SECRETS_FILE}"
+    - jq empty "${SECRETS_FILE}" || (echo "Invalid JSON file!" && exit 1)
 
-    # Execute deployment
+    - chmod 644 "${SECRETS_FILE}"
+
     - bundle exec fastlane distribute_development
   only:
     - tags
@@ -37,12 +33,11 @@ deploy_to_development:
 deploy_to_production:
   stage: deploy
   script:
-    - cp "${CI_SECURE_FILES}/google-service-secrets.json" ./
-    - chmod 644 google-service-secrets.json
+    - echo "$GOOGLE_SERVICE_SECRETS" | base64 -d > "${SECRETS_FILE}"
+    - chmod 644 "${SECRETS_FILE}"
     - bundle exec fastlane distribute_production
   only:
     - main
 
 after_script:
-  # Cleanup secrets file
-  - rm -f google-service-secrets.json
+  - rm -f "${SECRETS_FILE}"
