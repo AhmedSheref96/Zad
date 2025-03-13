@@ -3,10 +3,10 @@ stages:
   - production
 
 variables:
+  SECURE_FILE_NAME: "google-service-secrets.json"
   JAVA_VERSION: "17"
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
-  SECURE_FILE_NAME: "google-service-secrets.json"
 
 image: cirrusci/android-sdk:33
 
