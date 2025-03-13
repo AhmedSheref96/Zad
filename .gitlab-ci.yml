@@ -2,40 +2,38 @@ stages:
   - development
   - production
 
-image: cirrusci/android-sdk:30
-
 variables:
   JAVA_VERSION: "17"
-  GIT_BRANCH: $CI_COMMIT_REF_NAME
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
 
-default:
-  before_script:
-    - apt-get update && apt-get install -y ruby-full curl unzip
-    - ruby -v
-    - gem install bundler fastlane
-    - bundler -v
-    - fastlane -v
-    - chmod +x ./gradlew
-    - apt-get install -y openjdk-${JAVA_VERSION}-jdk
-    - java -version
-    - bundle install
+image: cirrusci/android-sdk:33
 
-deploy to development:
+before_script:
+  - apt-get update -qq && apt-get install -y -qq ruby-full unzip
+  - gem install bundler
+  - bundle install
+
+deploy_to_development:
   stage: development
   script:
-    - echo "Starting the Android build"
-    - bundle exec fastlane distribute
-  rules:
-    - if: '$CI_COMMIT_REF_NAME =~ /^(feature|feat)/ || $CI_COMMIT_REF_NAME == "development"'
-      when: always
-    - if: '$CI_COMMIT_TAG =~ /^v-/'
-      when: always
+    - cp $CI_SECURE_FILES/google-service-secrets.json ./
+    - chmod 644 google-service-secrets.json
+    - ls -la
+    - bundle exec fastlane distribute_development
+  only:
+    - tags
+    - development
+    - /^v-dev-.*/
 
-deploy to production:
+deploy_to_production:
   stage: production
   script:
-    - echo "Starting the Android build"
-    - bundle exec fastlane distribute
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "main" && $CI_COMMIT_TAG =~ /^v-/'
-      when: always
+    - cp $CI_SECURE_FILES/google-service-secrets.json ./
+    - chmod 644 google-service-secrets.json
+    - bundle exec fastlane distribute_production
+  only:
+    - main
+
+after_script:
+  - rm -f google-service-secrets.json
