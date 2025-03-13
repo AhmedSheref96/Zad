@@ -23,19 +23,19 @@ deploy_to_development:
     # 1. Base64 decoding with validation
     - echo "Decoding secrets..."
     - echo "$GOOGLE_SERVICE_SECRETS" | base64 --decode > "${SECRETS_FILE}" || {
-      echo "DECODE_ERROR: Invalid Base64 input";
+      echo "DECODE_ERROR = Invalid Base64 input";
       exit 1;
     }
 
     # 2. File validation
     - test -s "${SECRETS_FILE}" || {
-      echo "FILE_ERROR: Empty/missing secrets file";
+      echo "FILE_ERROR = Empty/missing secrets file";
       exit 1;
     }
 
     # 3. JSON validation
     - jq empty "${SECRETS_FILE}" || {
-      echo "JSON_ERROR: Invalid JSON structure";
+      echo "JSON_ERROR = Invalid JSON structure";
       exit 1;
     }
 
