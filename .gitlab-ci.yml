@@ -24,7 +24,7 @@ deploy-to-development:
   script:
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > google-services.json
     - chmod 644 google-services.json
-    - bundle exec fastlane distribute_development
+    - bundle exec fastlane distribute
   rules:
     - if: '$CI_COMMIT_REF_NAME == "development"'
     - if: '$CI_COMMIT_TAG =~ /^v-dev-/'
@@ -34,7 +34,7 @@ deploy-to-production:
   script:
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > google-services.json
     - chmod 644 google-services.json
-    - bundle exec fastlane distribute_production
+    - bundle exec fastlane distribute
   rules:
     - if: '$CI_COMMIT_REF_NAME == "main" && $CI_COMMIT_TAG =~ /^v-prod-/'
 
