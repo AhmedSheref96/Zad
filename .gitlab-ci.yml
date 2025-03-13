@@ -29,6 +29,7 @@ deploy to development:
   only:
     refs:
       - tags
+      - development
     variables:
       - $CI_COMMIT_TAG =~ /^v-.*/
 
