@@ -18,11 +18,44 @@ before_script:
 deploy_to_development:
   stage: deploy
   script:
+    # Validate environment variable exists
+    - if [ -z "$GOOGLE_SERVICE_SECRETS" ]; then echo "ERROR= Missing GOOGLE_SERVICE_SECRETS variable"; exit 1; fi
+
+    # Debug: Show first 50 characters of the secret
+    - echo "Base64 starts with= ${GOOGLE_SERVICE_SECRETS:0:50}"
+
+    # Decode with newline handling
     - echo "Decoding secrets..."
-    - echo "$GOOGLE_SERVICE_SECRETS" | base64 --decode > "${SECRETS_FILE}" || { echo "DECODE_ERROR= Invalid Base64 input"; exit 1; }
-    - test -s "${SECRETS_FILE}" || { echo "FILE_ERROR= Empty/missing secrets file"; exit 1; }
-    - jq empty "${SECRETS_FILE}" || { echo "JSON_ERROR= Invalid JSON structure"; exit 1; }
+    - echo "$GOOGLE_SERVICE_SECRETS" | tr -d '\n' | base64 --decode > "${SECRETS_FILE}" || {
+        echo "DECODE_ERROR= Failed to decode Base64";
+        echo "Potential causes:";
+        echo "1. Invalid Base64 characters";
+        echo "2. Incorrect padding";
+        echo "3. Special characters in variable";
+        exit 1;
+      }
+
+    # File validation
+    - echo "File size= $(wc -c < "${SECRETS_FILE}") bytes"
+    - test -s "${SECRETS_FILE}" || {
+        echo "FILE_ERROR= File empty after decoding";
+        echo "Verify Base64 encoding of original file:";
+        echo "base64 -i google-service-secrets.json | pbcopy";
+        exit 1;
+      }
+
+    # JSON validation
+    - jq empty "${SECRETS_FILE}" || {
+        echo "JSON_ERROR= Invalid JSON content";
+        echo "First 100 chars:";
+        head -c 100 "${SECRETS_FILE}";
+        exit 1;
+      }
+
+    # Secure permissions
     - chmod 600 "${SECRETS_FILE}"
+
+    # Proceed with deployment
     - bundle exec fastlane distribute_development
   only:
     - tags
@@ -32,7 +65,7 @@ deploy_to_development:
 deploy_to_production:
   stage: deploy
   script:
-    - echo "$GOOGLE_SERVICE_SECRETS" | base64 --decode > "${SECRETS_FILE}"
+    - echo "$GOOGLE_SERVICE_SECRETS" | tr -d '\n' | base64 --decode > "${SECRETS_FILE}"
     - chmod 600 "${SECRETS_FILE}"
     - bundle exec fastlane distribute_production
   only:
