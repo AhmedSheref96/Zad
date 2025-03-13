@@ -3,27 +3,46 @@ stages:
   - deploy
 
 variables:
-  JAVA_VERSION: "17"
   SECRETS_FILE: "google-service-secrets.json"
+  JAVA_VERSION: "17"
 
 image: cirrusci/android-sdk:33
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq ruby-full unzip jq
+  - apt-get update -qq
+  # Install essential tools
+  - apt-get install -y -qq coreutils file jq ruby-full unzip
+  # Fix rubyzip version before bundle install
+  - sed -i "s/gem 'rubyzip'/gem 'rubyzip', '~> 2.3.0'/" Gemfile
   - gem install bundler
   - bundle install
 
 deploy_to_development:
   stage: deploy
   script:
-    - echo "$GOOGLE_SERVICE_SECRETS" | base64 -d > "${SECRETS_FILE}"
+    # 1. Base64 decoding with validation
+    - echo "Decoding secrets..."
+    - echo "$GOOGLE_SERVICE_SECRETS" | base64 --decode > "${SECRETS_FILE}" || {
+      echo "DECODE_ERROR: Invalid Base64 input";
+      exit 1;
+    }
 
-    - ls -la
-    - file "${SECRETS_FILE}"
-    - jq empty "${SECRETS_FILE}" || (echo "Invalid JSON file!" && exit 1)
+    # 2. File validation
+    - test -s "${SECRETS_FILE}" || {
+      echo "FILE_ERROR: Empty/missing secrets file";
+      exit 1;
+    }
 
-    - chmod 644 "${SECRETS_FILE}"
+    # 3. JSON validation
+    - jq empty "${SECRETS_FILE}" || {
+      echo "JSON_ERROR: Invalid JSON structure";
+      exit 1;
+    }
 
+    # 4. Secure permissions
+    - chmod 600 "${SECRETS_FILE}"
+
+    # 5. Execute deployment
     - bundle exec fastlane distribute_development
   only:
     - tags
@@ -33,8 +52,8 @@ deploy_to_development:
 deploy_to_production:
   stage: deploy
   script:
-    - echo "$GOOGLE_SERVICE_SECRETS" | base64 -d > "${SECRETS_FILE}"
-    - chmod 644 "${SECRETS_FILE}"
+    - echo "$GOOGLE_SERVICE_SECRETS" | base64 --decode > "${SECRETS_FILE}"
+    - chmod 600 "${SECRETS_FILE}"
     - bundle exec fastlane distribute_production
   only:
     - main
