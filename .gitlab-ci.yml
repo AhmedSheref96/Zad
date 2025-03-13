@@ -6,6 +6,7 @@ variables:
   JAVA_VERSION: "17"
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
+  SECURE_FILE_NAME: "google-service-secrets.json"
 
 image: cirrusci/android-sdk:33
 
@@ -14,26 +15,25 @@ before_script:
   - gem install bundler
   - bundle install
 
-deploy_to_development:
+deploy-to-development:
   stage: development
   script:
-    - cp $CI_SECURE_FILES/google-service-secrets.json ./
-    - chmod 644 google-service-secrets.json
+    - cp $CI_SECURE_FILES/${SECURE_FILE_NAME} ./
+    - chmod 644 ${SECURE_FILE_NAME}
     - ls -la
     - bundle exec fastlane distribute_development
-  only:
-    - tags
-    - development
-    - /^v-dev-.*/
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "development"'
+    - if: '$CI_COMMIT_TAG =~ /^v-dev-/'
 
-deploy_to_production:
+deploy-to-production:
   stage: production
   script:
-    - cp $CI_SECURE_FILES/google-service-secrets.json ./
-    - chmod 644 google-service-secrets.json
+    - cp $CI_SECURE_FILES/${SECURE_FILE_NAME} ./
+    - chmod 644 ${SECURE_FILE_NAME}
     - bundle exec fastlane distribute_production
-  only:
-    - main
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main" && $CI_COMMIT_TAG =~ /^v-prod-/'
 
 after_script:
-  - rm -f google-service-secrets.json
+  - rm -f ${SECURE_FILE_NAME}
