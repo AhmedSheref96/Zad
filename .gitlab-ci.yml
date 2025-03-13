@@ -7,6 +7,7 @@ variables:
   JAVA_VERSION: "17"
   LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
+  CI_DEBUG_TRACE: "true"
 
 image: cirrusci/android-sdk:33
 
@@ -18,6 +19,9 @@ before_script:
 deploy-to-development:
   stage: development
   script:
+    - echo "Checking Secure Files..."
+    - ls -la $CI_SECURE_FILES
+    - chmod 644 $CI_SECURE_FILES/google-service-secrets.json
     - cp $CI_SECURE_FILES/${SECURE_FILE_NAME} ./
     - chmod 644 ${SECURE_FILE_NAME}
     - ls -la
