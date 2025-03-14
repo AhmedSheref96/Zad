@@ -23,8 +23,7 @@ deploy-to-development:
   script:
     - echo "ENCODED_GOOGLE_SERVICES= ${ENCODED_GOOGLE_SERVICES:0:10}..."
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 -d > google-service-secrets.json
-    - echo "FIREBASE_CONDITIONALS_JSON =" ENV['FIREBASE_CONDITIONALS_JSON']
-    - chmod 644 ENV['FIREBASE_CONDITIONALS_JSON']
+    - chmod 644 google-service-secrets.json
     - bundle exec fastlane distribute
   rules:
     - if: '$CI_COMMIT_REF_NAME == "development"'
@@ -34,7 +33,7 @@ deploy-to-production:
   stage: production
   script:
     - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > google-service-secrets.json
-    - chmod 644 ENV['FIREBASE_CONDITIONALS_JSON']
+    - chmod 644 google-service-secrets.json
     - bundle exec fastlane distribute
   rules:
     - if: '$CI_COMMIT_REF_NAME == "main" && $CI_COMMIT_TAG =~ /^v-prod-/'
