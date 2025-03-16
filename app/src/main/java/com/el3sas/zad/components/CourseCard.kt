@@ -1,11 +1,9 @@
 package com.el3sas.zad.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,23 +32,28 @@ fun CourseCard(
     onCourseClick: (CourseModel) -> Unit = {},
 ) {
     Card(
-        modifier =
-            Modifier
-                .fillMaxWidth(),
+        modifier = modifier,
         onClick = {
             onCourseClick(course)
         },
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .height(intrinsicSize = IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.End,
-        ) {
+        Column {
+            if (course.imageUrl.isNotEmpty()) {
+                Box(
+                    modifier =
+                        Modifier.aspectRatio(19f / 16f),
+                ) {
+                    AsyncImage(
+                        model = course.imageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
             Column(
                 modifier =
                     Modifier
-                        .weight(2f)
                         .padding(8.dp),
             ) {
                 Text(
@@ -85,21 +88,6 @@ fun CourseCard(
                         Modifier
                             .fillMaxWidth(),
                     properties = course.properties,
-                )
-            }
-            Box(
-                modifier =
-                    Modifier
-                        .weight(1f),
-            ) {
-                AsyncImage(
-                    model = course.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .circleGradientBackground(),
                 )
             }
         }
