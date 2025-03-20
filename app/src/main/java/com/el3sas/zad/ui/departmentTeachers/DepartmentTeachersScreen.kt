@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +44,7 @@ fun DepartmentTeachersScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        tint = Color.Black,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         contentDescription = "back button",
                     )
                 }
@@ -51,7 +52,7 @@ fun DepartmentTeachersScreen(
                 Text(
                     modifier = Modifier.padding(dimensionResource(R.dimen.content_padding_2)),
                     text = stringResource(R.string.select_teacher),
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                 )
