@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,12 +31,12 @@ fun PropertiesList(
     properties: List<PropertiesModel>,
     horizontalArrangement: Arrangement.Horizontal =
         Arrangement.spacedBy(
-            8.dp,
+            4.dp,
             alignment = Alignment.Start,
         ),
     verticalArrangement: Arrangement.Vertical =
         Arrangement.spacedBy(
-            8.dp,
+            4.dp,
             alignment = Alignment.Top,
         ),
     contentVerticalAlignment: Alignment.Vertical = Alignment.CenterVertically,
@@ -80,7 +81,10 @@ fun PropertyItem(
             contentDescription = property.title,
         )
         Spacer(Modifier.width(4.dp))
-        Text(text = property.value)
+        Text(
+            text = property.value,
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
