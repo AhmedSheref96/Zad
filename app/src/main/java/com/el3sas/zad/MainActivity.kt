@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.collection.forEach
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,13 +44,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ZadTheme {
                 Scaffold(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .systemBarsPadding(),
                 ) { innerPadding ->
                     val navController = rememberNavController()
                     AppNavHost(
                         navController = navController,
-                        modifier =
-                            Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(innerPadding),
                     )
                 }
             }
