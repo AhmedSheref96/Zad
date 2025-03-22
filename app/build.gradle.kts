@@ -108,6 +108,7 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidyoutubeplayer.core)
+    implementation(libs.androidyoutubeplayer.custom.ui)
 
     implementation(libs.gson)
     implementation(libs.androidx.paging.compose)

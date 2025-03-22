@@ -47,6 +47,7 @@ coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version
 androidx-hilt-worker = { module = "androidx.hilt:hilt-work", version.ref = "hiltWorker" }
 androidx-hilt-worker-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltWorker" }
 androidyoutubeplayer-core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "core" }
+androidyoutubeplayer-custom-ui = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:custom-ui", version.ref = "core" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
