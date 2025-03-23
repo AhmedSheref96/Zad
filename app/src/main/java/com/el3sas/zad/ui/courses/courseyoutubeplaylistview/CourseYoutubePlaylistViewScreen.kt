@@ -102,9 +102,7 @@ fun PlaylistView(
     ) { paddingValues ->
         Column(
             modifier =
-                Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(),
+                Modifier.fillMaxSize(),
         ) {
             mainContent()
 

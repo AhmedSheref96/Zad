@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.collection.forEach
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,10 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ZadTheme {
                 Scaffold(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .systemBarsPadding(),
+                    modifier = Modifier.fillMaxSize(),
                 ) { innerPadding ->
                     val navController = rememberNavController()
                     AppNavHost(
@@ -67,6 +63,7 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
 ) {
     NavHost(
+        modifier = modifier,
         startDestination = Destinations.DepartmentsList,
         navController = navController,
     ) {
@@ -82,7 +79,7 @@ fun AppNavHost(
 //                    CourseModel::class.java,
 //                )
             val courseModel = backStackEntry.toRoute<Destinations.YoutubePlaylist>().courseModel
-            CourseYoutubePlaylistViewRoute(modifier = modifier, courseModel = courseModel)
+            CourseYoutubePlaylistViewRoute(courseModel = courseModel)
         }
 
         composable<Destinations.DepartmentTeachers>(
@@ -92,7 +89,6 @@ fun AppNavHost(
                 ),
         ) {
             DepartmentTeachersRoute(
-                modifier = modifier,
                 onAction = {
                     when (it) {
                         DepartmentTeachersAction.OnBackClicked -> navController.popBackStack()
@@ -109,7 +105,6 @@ fun AppNavHost(
 
         composable<Destinations.DepartmentsList> {
             DepartmentsRoute(
-                modifier = modifier,
                 coordinator =
                     rememberDepartmentsCoordinator(
                         viewModel = hiltViewModel(),

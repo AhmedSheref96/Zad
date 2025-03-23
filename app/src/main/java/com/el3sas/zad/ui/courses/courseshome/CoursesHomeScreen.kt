@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,34 +22,32 @@ fun CoursesHomeScreen(
     state: CoursesHomeState,
     onAction: (CoursesHomeAction) -> Unit,
 ) {
-    Scaffold {
-        Box(modifier = Modifier.padding(it)) {
-            when (state) {
-                CoursesHomeState.Idle -> {
-                }
+    Box(modifier = modifier) {
+        when (state) {
+            CoursesHomeState.Idle -> {
+            }
 
-                CoursesHomeState.Loading -> {
-                    Text(text = "Loading...")
-                }
+            CoursesHomeState.Loading -> {
+                Text(text = "Loading...")
+            }
 
-                CoursesHomeState.Error -> {
-                    Text(text = "Error...")
-                }
+            CoursesHomeState.Error -> {
+                Text(text = "Error...")
+            }
 
-                is CoursesHomeState.CoursesLoaded -> {
-                    LazyVerticalStaggeredGrid(
-                        columns = StaggeredGridCells.Fixed(2),
-                        modifier = Modifier.padding(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalItemSpacing = 8.dp,
-                    ) {
-                        items(state.courses, key = { it.id }) {
-                            CourseCard(
-                                modifier = Modifier.fillMaxWidth(),
-                                course = it,
-                                onCourseClick = { onAction(CoursesHomeAction.OnCourseClicked(it)) },
-                            )
-                        }
+            is CoursesHomeState.CoursesLoaded -> {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Fixed(2),
+                    modifier = Modifier.padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalItemSpacing = 8.dp,
+                ) {
+                    items(state.courses, key = { it.id }) {
+                        CourseCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            course = it,
+                            onCourseClick = { onAction(CoursesHomeAction.OnCourseClicked(it)) },
+                        )
                     }
                 }
             }

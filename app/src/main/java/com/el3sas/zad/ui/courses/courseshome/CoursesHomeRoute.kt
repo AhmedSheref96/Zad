@@ -27,6 +27,7 @@ fun CoursesHomeRoute(
 
     // UI Rendering
     CoursesHomeScreen(
+        modifier = modifier,
         state = uiState,
         onAction = actionsHandler,
     )
