@@ -1,4 +1,4 @@
-package com.el3sas.zad.components
+package com.el3asas.zad.systemdesign.components
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier

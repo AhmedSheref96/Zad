@@ -1,4 +1,4 @@
-package com.el3sas.zad.components
+package com.el3asas.zad.systemdesign.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,13 +17,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.el3asas.zad.domain.models.CourseModel
 import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.domain.models.PropertiesModel
 import com.el3asas.zad.domain.models.TeacherModel
-import com.google.firebase.util.nextAlphanumericString
 import kotlin.random.Random
 
 @Composable
@@ -62,7 +60,7 @@ fun CourseCard(
                         Modifier
                             .fillMaxWidth(),
                     text = course.title,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
                 Spacer(Modifier.height(4.dp))
@@ -72,7 +70,7 @@ fun CourseCard(
                         Modifier
                             .fillMaxWidth(),
                     text = course.description,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
                 )
 
                 Spacer(Modifier.height(4.dp))
@@ -158,7 +156,7 @@ fun CourseCardPreview() {
             imageUrl = "https://via.placeholder.com/150",
             teachers = listOf(teacher),
             properties = properties,
-            id = Random.nextAlphanumericString(5),
+            id = Random(10).nextInt().toString(),
             courseYoutubeUrl = "",
         )
     CourseCard(course = course)

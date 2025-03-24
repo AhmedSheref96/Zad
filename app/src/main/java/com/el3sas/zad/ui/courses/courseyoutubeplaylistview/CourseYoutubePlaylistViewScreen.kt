@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.el3asas.zad.domain.models.PlaylistItem
+import com.el3asas.zad.systemdesign.components.YoutubePlayListView
+import com.el3asas.zad.systemdesign.components.YoutubePlaylistItemView
 import com.el3sas.zad.R
-import com.el3sas.zad.components.YoutubePlayListView
-import com.el3sas.zad.components.YoutubePlaylistItemView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -1,4 +1,5 @@
-package com.el3sas.zad.utils
+package com.el3asas.zad.systemdesign.utils
+
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.os.Build
