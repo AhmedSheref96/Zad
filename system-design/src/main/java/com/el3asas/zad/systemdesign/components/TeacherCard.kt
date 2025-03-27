@@ -1,4 +1,4 @@
-package com.el3sas.zad.components
+package com.el3asas.zad.systemdesign.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,7 +45,7 @@ fun TeacherCard(
                 teacher.imageUrl,
                 placeholder = painterResource(R.drawable.teacher_placeholder),
                 contentDescription = teacher.name,
-                contentScale= ContentScale.Crop,
+                contentScale = ContentScale.Crop,
                 modifier =
                     Modifier
                         .size(46.dp)
@@ -61,7 +61,7 @@ fun TeacherCard(
                 fontSize = AppTypography.bodyLarge.fontSize,
                 textAlign = TextAlign.Start,
                 modifier =
-                    Modifier
+                    Modifier.Companion
                         .constrainAs(name) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)

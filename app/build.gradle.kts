@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -106,6 +107,12 @@ dependencies {
     ksp(libs.androidx.hilt.worker.compiler)
 
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidyoutubeplayer.core)
+    implementation(libs.androidyoutubeplayer.custom.ui)
+
+    implementation(libs.gson)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime.ktx)
 
     implementation(project(":system-design"))
     implementation(project(":domain"))

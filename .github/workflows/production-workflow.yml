@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.ref_type == 'tag' && github.ref_name == 'v-*' }}
 
     permissions:
       contents: write
@@ -18,13 +17,19 @@ jobs:
       ORIGIN: ${{ secrets.ORIGIN }}
 
     steps:
-      - name: Decode Google Service Secrets
-        run: echo "$GOOGLE_SERVICE_SECRETS" > fastlane/google-service-secrets.json
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Google Service Secrets file
+        run: |
+          echo "$GOOGLE_SERVICE_SECRETS" | base64 -d > google-service-secrets.json
         env:
           GOOGLE_SERVICE_SECRETS: ${{ secrets.GOOGLE_SERVICE_SECRETS }}
 
-      - name: Checkout code
-        uses: actions/checkout@v4
+
+      - name: Check if Tag starts with "v-"
+        if: ${{ (github.event.ref_type == 'tag' && startsWith(github.ref_name, 'v-'))||startsWith(github.ref_name, 'testCi') }}
+        run: echo "Deploying version = ${{ github.ref_name }}"
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -55,10 +60,14 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: set branch name
-        run: export GIT_BRANCH=$github.ref_name fastlane
+        run: echo "GIT_BRANCH=${{ github.ref_name }}" >> $GITHUB_ENV
 
-#      - name: Run Fastlane Lane
-#        run: bundle exec fastlane tag_commit_if_needed
+      #      - name: Run Fastlane Lane
+      #        run: bundle exec fastlane tag_commit_if_needed
 
-      - name: deploy to production
+      - name: deploy to development
         run: bundle exec fastlane distribute
+
+      - name: Cleanup secrets
+        run: rm -f ./fastlane/google-service-secrets.json
+        if: always()

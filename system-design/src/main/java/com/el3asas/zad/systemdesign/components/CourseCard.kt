@@ -1,16 +1,15 @@
-package com.el3sas.zad.components
+package com.el3asas.zad.systemdesign.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,13 +17,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_TABLET
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.el3asas.zad.domain.models.CourseModel
 import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.domain.models.PropertiesModel
 import com.el3asas.zad.domain.models.TeacherModel
-import com.google.firebase.util.nextAlphanumericString
 import kotlin.random.Random
 
 @Composable
@@ -34,23 +31,28 @@ fun CourseCard(
     onCourseClick: (CourseModel) -> Unit = {},
 ) {
     Card(
-        modifier =
-            Modifier
-                .fillMaxWidth(),
+        modifier = modifier,
         onClick = {
             onCourseClick(course)
         },
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .height(intrinsicSize = IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.End,
-        ) {
+        Column {
+            if (course.imageUrl.isNotEmpty()) {
+                Box(
+                    modifier =
+                        Modifier.aspectRatio(19f / 16f),
+                ) {
+                    AsyncImage(
+                        model = course.imageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
             Column(
                 modifier =
                     Modifier
-                        .weight(2f)
                         .padding(8.dp),
             ) {
                 Text(
@@ -58,19 +60,20 @@ fun CourseCard(
                         Modifier
                             .fillMaxWidth(),
                     text = course.title,
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(4.dp))
 
                 Text(
                     modifier =
                         Modifier
                             .fillMaxWidth(),
                     text = course.description,
+                    style = MaterialTheme.typography.bodySmall,
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(4.dp))
 
                 SmallTeachersList(
                     modifier =
@@ -78,28 +81,13 @@ fun CourseCard(
                     list = course.teachers,
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(4.dp))
 
                 PropertiesList(
                     modifier =
                         Modifier
                             .fillMaxWidth(),
                     properties = course.properties,
-                )
-            }
-            Box(
-                modifier =
-                    Modifier
-                        .weight(1f),
-            ) {
-                AsyncImage(
-                    model = course.imageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .gradientBackground(),
                 )
             }
         }
@@ -167,9 +155,9 @@ fun CourseCardPreview() {
             description = "Course Description",
             imageUrl = "https://via.placeholder.com/150",
             teachers = listOf(teacher),
-            department = listOf(department),
             properties = properties,
-            id = Random.nextAlphanumericString(5),
+            id = Random(10).nextInt().toString(),
+            courseYoutubeUrl = "",
         )
     CourseCard(course = course)
 }

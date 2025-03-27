@@ -56,4 +56,7 @@ dependencies {
 
     implementation(libs.androidx.hilt.worker)
     ksp(libs.androidx.hilt.worker.compiler)
+    implementation(libs.gson)
+
+    implementation(libs.androidx.paging.runtime.ktx)
 }

@@ -2,62 +2,41 @@ stages:
   - development
   - production
 
-image: cirrusci/android-sdk:30
-
 variables:
-  JAVA_VERSION: "17"
-  GIT_BRANCH: $CI_COMMIT_REF_NAME
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
 
-default:
-  before_script:
-    - apt-get update && apt-get install -y ruby-full curl unzip
-    - ruby -v
-    - gem install bundler fastlane
-    - bundler -v
-    - fastlane -v
-    - chmod +x ./gradlew
-    - apt-get install -y openjdk-${JAVA_VERSION}-jdk
-    - java -version
-    - bundle install
+image: cirrusci/android-sdk:33
 
-#versioning-dev:
-#  stage: development
-#  script:
-#    - bundle exec fastlane tag_commit_if_needed
-#  only:
-#    refs:
-#      - /^feature.*$/
-#      - /^feat.*$/
-#      - development
-#
-#versioning-prod:
-#  stage: production
-#  script:
-#    - bundle exec fastlane tag_commit_if_needed
-#  only:
-#    refs:
-#      - main
+before_script:
+  - apt-get update -qq
+  - apt-get install -y -qq ruby-full unzip openjdk-17-jdk
+  - update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+  - java -version
+  - gem install bundler
+  - bundle install
+  - chmod +x ./gradlew
+  - ls -la ./gradlew
 
-deploy to development:
+deploy-to-development:
   stage: development
   script:
-    - echo "Starting the Android build"
-    - bundle install
+    - echo "ENCODED_GOOGLE_SERVICES= ${ENCODED_GOOGLE_SERVICES:0:10}..."
+    - echo "$ENCODED_GOOGLE_SERVICES" | base64 -d > google-service-secrets.json
+    - chmod 644 google-service-secrets.json
     - bundle exec fastlane distribute
-  only:
-    refs:
-      - tags
-    variables:
-      - $CI_COMMIT_TAG =~ /^v-.*/
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "development"'
+    - if: '$CI_COMMIT_TAG =~ /^v-dev-/'
 
-deploy to production:
-  stage: development
+deploy-to-production:
+  stage: production
   script:
-    - echo "Starting the Android build"
-    - bundle install
+    - echo "$ENCODED_GOOGLE_SERVICES" | base64 --decode > google-service-secrets.json
+    - chmod 644 google-service-secrets.json
     - bundle exec fastlane distribute
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main" && $CI_COMMIT_TAG =~ /^v-prod-/'
 
-  only:
-    - main
-  variables:
-    - $CI_COMMIT_TAG =~ /^v-.*/
+after_script:
+  - rm -f google-services.json

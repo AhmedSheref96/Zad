@@ -11,15 +11,7 @@ data class CourseModel(
     val title: String,
     val description: String,
     val imageUrl: String,
+    val courseYoutubeUrl: String,
     val teachers: List<TeacherModel>,
-    val department: List<DepartmentModel>,
     val properties: List<PropertiesModel>,
-) : Parcelable
-
-@Parcelize
-@Serializable
-data class PropertiesModel(
-    val iconUrl: String,
-    val title: String,
-    val value: String,
 ) : Parcelable

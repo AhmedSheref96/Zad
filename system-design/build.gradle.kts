@@ -77,7 +77,14 @@ dependencies {
     api(libs.coil.network.okhttp)
     api(libs.coil.compose)
 
+    implementation(libs.androidx.constraintlayout.compose)
+
+    implementation(libs.androidyoutubeplayer.core)
+    implementation(libs.androidyoutubeplayer.custom.ui)
+
     implementation(libs.ksp.gradlePlugin)
     implementation(libs.ksp.api)
     implementation(libs.ksp)
+
+    implementation(project(":domain"))
 }

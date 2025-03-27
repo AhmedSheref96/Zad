@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.el3asas.zad.domain.models.DepartmentModel
 import com.el3asas.zad.systemdesign.R
-import com.el3sas.zad.components.DepartmentCard
+import com.el3asas.zad.systemdesign.components.DepartmentCard
 import com.el3sas.zad.ui.departmentsHome.DepartmentsAction.OnDepartmentCardClicked
 
 @Composable

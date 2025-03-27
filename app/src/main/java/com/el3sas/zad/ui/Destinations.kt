@@ -19,7 +19,7 @@ sealed interface Destinations {
     ) : Destinations
 
     @Serializable
-    data class CourseLessons(
+    data class YoutubePlaylist(
         val courseModel: CourseModel,
     ) : Destinations
 }

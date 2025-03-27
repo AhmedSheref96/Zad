@@ -7,7 +7,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun DepartmentTeachersRoute(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     coordinator: DepartmentTeachersCoordinator = rememberDepartmentTeachersCoordinator(),
     onAction: (DepartmentTeachersAction) -> Unit,
 ) {

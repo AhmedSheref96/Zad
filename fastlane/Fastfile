@@ -8,6 +8,7 @@ platform :android do
     require 'base64'
 
     json_data = ENV['GOOGLE_SERVICE_SECRETS']
+
     if json_data.nil? || json_data.empty?
       UI.user_error!("Missing GOOGLE_SERVICE_SECRETS environment variable")
     end
@@ -147,7 +148,7 @@ platform :android do
       service_credentials_file: ENV['FIREBASE_CONDITIONALS_JSON'],
       release_notes: release_notes,
       groups: "operations-team,qa-team",
-      debug: false
+      debug: true
     )
   end
 

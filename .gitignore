@@ -14,3 +14,4 @@
 .cxx
 local.properties
 /fastlane/google-service-secrets.json
+google-service-secrets.json

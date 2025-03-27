@@ -11,12 +11,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.el3asas.zad.domain.models.TeacherModel
 import com.el3asas.zad.systemdesign.R
-import com.el3sas.zad.components.TeacherCard
+import com.el3asas.zad.systemdesign.components.TeacherCard
 
 @Composable
 fun DepartmentTeachersScreen(
@@ -43,7 +43,7 @@ fun DepartmentTeachersScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        tint = Color.Black,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         contentDescription = "back button",
                     )
                 }
@@ -51,7 +51,7 @@ fun DepartmentTeachersScreen(
                 Text(
                     modifier = Modifier.padding(dimensionResource(R.dimen.content_padding_2)),
                     text = stringResource(R.string.select_teacher),
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                 )

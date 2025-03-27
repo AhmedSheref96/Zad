@@ -2,6 +2,7 @@ package com.el3asas.zad.systemdesign.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.el3asas.zad.systemdesign.R
@@ -16,16 +17,18 @@ val provider =
 val bodyFontFamily =
     FontFamily(
         Font(
-            googleFont = GoogleFont("Cairo"),
+            googleFont = GoogleFont("Rubik"),
             fontProvider = provider,
+            weight = FontWeight.Normal,
         ),
     )
 
 val displayFontFamily =
     FontFamily(
         Font(
-            googleFont = GoogleFont("Cairo"),
+            googleFont = GoogleFont("Rubik"),
             fontProvider = provider,
+            weight = FontWeight.Normal,
         ),
     )
 
@@ -34,7 +37,7 @@ val courseCardFontFamily =
         Font(
             googleFont = GoogleFont("Aref Ruqaa"),
             fontProvider = provider,
-        )
+        ),
     )
 
 // Default Material 3 typography values

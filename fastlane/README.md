@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
+### android setup_google_secrets
+
+```sh
+[bundle exec] fastlane android setup_google_secrets
+```
+
+
+
 ### android test
 
 ```sh
@@ -54,14 +62,6 @@ distribute to app distribution
 ```
 
 
-
-### android init_origin
-
-```sh
-[bundle exec] fastlane android init_origin
-```
-
-Init origin
 
 ----
 
