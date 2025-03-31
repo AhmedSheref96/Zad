@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -26,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import com.el3asas.zad.systemdesign.utils.enterFullscreen
 import com.el3asas.zad.systemdesign.utils.exitFullscreen
+import com.el3asas.zad.systemdesign.utils.openYoutubeLoginWebView
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.FullscreenListener
@@ -45,6 +47,7 @@ fun YoutubePlayListView(
     var isFullscreen by rememberSaveable { mutableStateOf(false) }
     val originalOrientation = rememberSaveable { activity.requestedOrientation }
     var lastSavedVideoLocation by rememberSaveable { mutableFloatStateOf(0f) }
+    var isLoggedIn by remember { mutableStateOf(false) }
 
     LaunchedEffect(isFullscreen) {
         if (isFullscreen) {
@@ -67,70 +70,81 @@ fun YoutubePlayListView(
                 .background(Color.Black),
         contentAlignment = Alignment.Center,
     ) {
-        AndroidView(
-            factory = { ctx ->
-                YouTubePlayerView(context).apply {
-                    enableAutomaticInitialization = false
-                    enableBackgroundPlayback(true)
-                    val tracker = YouTubePlayerTracker()
+        if (isLoggedIn) {
+            AndroidView(
+                factory = { ctx ->
+                    YouTubePlayerView(context).apply {
+                        enableAutomaticInitialization = false
+                        enableBackgroundPlayback(true)
+                        val tracker = YouTubePlayerTracker()
 
-                    val options =
-                        IFramePlayerOptions
-                            .Builder()
-                            .controls(1)
-                            .listType("playlist")
-                            .list(playlistId)
-                            .fullscreen(1)
-                            .build()
+                        val options =
+                            IFramePlayerOptions
+                                .Builder()
+                                .controls(1)
+                                .listType("playlist")
+                                .list(playlistId)
+                                .fullscreen(1)
+                                .build()
 
-                    addFullscreenListener(
-                        object : FullscreenListener {
-                            override fun onEnterFullscreen(
-                                fullscreenView: View,
-                                exitFullscreen: () -> Unit,
-                            ) {
-                                if (isFullscreen) {
-                                    exitFullscreen.invoke()
-                                } else {
-                                    lastSavedVideoLocation = tracker.currentSecond
-                                    isFullscreen = true
+                        addFullscreenListener(
+                            object : FullscreenListener {
+                                override fun onEnterFullscreen(
+                                    fullscreenView: View,
+                                    exitFullscreen: () -> Unit,
+                                ) {
+                                    if (isFullscreen) {
+                                        exitFullscreen.invoke()
+                                    } else {
+                                        lastSavedVideoLocation = tracker.currentSecond
+                                        isFullscreen = true
+                                    }
                                 }
-                            }
 
-                            override fun onExitFullscreen() {
-                                lastSavedVideoLocation = tracker.currentSecond
-                                isFullscreen = false
-                            }
-                        },
-                    )
+                                override fun onExitFullscreen() {
+                                    lastSavedVideoLocation = tracker.currentSecond
+                                    isFullscreen = false
+                                }
+                            },
+                        )
 
-                    initialize(
-                        object : AbstractYouTubePlayerListener() {
-                            override fun onReady(player: YouTubePlayer) {
-                                player.addListener(tracker)
-                                onReady(player)
-                                youtubePlayer = player
-                                player.seekTo(lastSavedVideoLocation)
-                                player.play()
-                            }
-                        },
-                        true,
-                        options,
-                    )
-                }
-            },
-            modifier =
-                modifier
-                    .then(
-                        if (isFullscreen) {
-                            Modifier
-                                .fillMaxHeight()
-                                .aspectRatio(16f / 9f)
-                        } else {
-                            Modifier.fillMaxWidth()
-                        },
-                    ),
-        )
+                        initialize(
+                            object : AbstractYouTubePlayerListener() {
+                                override fun onReady(player: YouTubePlayer) {
+                                    player.addListener(tracker)
+                                    onReady(player)
+                                    youtubePlayer = player
+                                    player.seekTo(lastSavedVideoLocation)
+                                    player.play()
+                                }
+                            },
+                            true,
+                            options,
+                        )
+                    }
+                },
+                modifier =
+                    modifier
+                        .then(
+                            if (isFullscreen) {
+                                Modifier
+                                    .fillMaxHeight()
+                                    .aspectRatio(16f / 9f)
+                            } else {
+                                Modifier.fillMaxWidth()
+                            },
+                        ),
+            )
+        } else {
+            AndroidView(
+                factory = {
+                    openYoutubeLoginWebView(context) {
+                        isLoggedIn = it
+                    }
+                },
+                modifier = modifier.fillMaxSize(),
+            )
+        }
     }
 }
 
